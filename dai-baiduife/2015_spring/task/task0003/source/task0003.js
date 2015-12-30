@@ -24,14 +24,20 @@
             }
         },false)
     }
+    //add遮罩层
     let addBtn = DOC.getElementById('addBtn');
     let mask = DOC.getElementById('mask');
     addBtn.addEventListener('click', function (event) {
         let e = window.event || event;
         mask.style.display = 'block';
     },false)
-    let noBtn = DOC.getElementById('noBtn');
-    noBtn.addEventListener('click', function () {
-        mask.style.display = 'none';
+
+    let createTask = DOC.getElementById('createTask');
+    createTask.addEventListener('click', function (event) {
+        let e = window.event || event;
+        //按下close关闭遮罩层
+        if (e.target.id === 'noBtn'){
+            mask.style.display = 'none';
+        }
     },false)
 })()

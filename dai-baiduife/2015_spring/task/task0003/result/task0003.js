@@ -25,14 +25,19 @@
             }
         }, false);
     }
+    //add遮罩层
     var addBtn = DOC.getElementById('addBtn');
     var mask = DOC.getElementById('mask');
     addBtn.addEventListener('click', function (event) {
         var e = window.event || event;
         mask.style.display = 'block';
     }, false);
-    var noBtn = DOC.getElementById('noBtn');
-    noBtn.addEventListener('click', function () {
-        mask.style.display = 'none';
+    //关闭遮罩层
+    var createTask = DOC.getElementById('createTask');
+    createTask.addEventListener('click', function (event) {
+        var e = window.event || event;
+        if (e.target.id === 'noBtn') {
+            mask.style.display = 'none';
+        }
     }, false);
 })();

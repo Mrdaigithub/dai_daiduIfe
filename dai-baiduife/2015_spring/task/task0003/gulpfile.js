@@ -22,7 +22,7 @@ gulp.task('mincss', function () {
 gulp.task('minjs', function() {
     return gulp.src('result/*.js')
         .pipe(uglify())
-        .pipe(concat('all.js'))
+        .pipe(concat('all.min.js'))
         .pipe(gulp.dest('result/min/'));
 });
 //sass转css
