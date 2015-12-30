@@ -3,9 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
-    <link rel="stylesheet" href="result/style.css">
+    <link rel="stylesheet" href="result/task0003.css">
 </head>
 <body>
-<p>hello world!</p>
+<header>
+    <h1>GTD TOOLS</h1>
+</header>
+<div class="main">
+    <div class="left">
+        <h2>所有任务 (<span>0</span>)</h2>
+        <h2>分类列表</h2>
+        <div class="tasklist">
+            <h4>默认分类 (<span>0</span>)<span class="closeBtn">X</span></h4>
+            <ul>
+                <li>task (<span>0</span>)<span class="closeBtn">X</span></li>
+            </ul>
+        </div>
+        <button id="addBtn"><span>+</span> 新增分类</button>
+    </div>
+</div>
+<div id="mask">
+    <div id="createTask">
+        <h2>Please enter a task name:</h2>
+        <input type="text" class="taskName">
+        <br>
+        <span label="task">父分类 </span>
+        <input type="radio" name="task" checked="checked" value="parent">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <span>子分类 </span>
+        <input type="radio" name="task" value="son">
+        <br>
+        <button id="okBtn">OK</button>
+        <button id="noBtn">close</button>
+    </div>
+</div>
+<script src="result/task0003.js"></script>
 </body>
 </html>
