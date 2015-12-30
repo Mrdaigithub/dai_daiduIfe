@@ -1,0 +1,155 @@
+*{
+  margin: 0;
+  padding:0;
+  cursor: default;
+}
+html,body{
+  font-size: 10px;
+}
+header{
+  background-color: #ddd;
+  h1{
+    color: #a0a0a0;
+    font-size: 3rem;
+    line-height: 5rem;
+    text-indent: 1.5rem;
+  }
+}
+.main{
+  .left{
+    width: 20%;
+    background-color: #f2f2f2;
+    position: absolute;
+    top:5rem;
+    bottom: 0;
+    border-right: 1px solid #e3e3e3;
+    h2{
+      font-size: 1.8rem;
+      font-weight: 500;
+      line-height: 3rem;
+      padding-left: 0.5rem;
+    }
+    .tasklist{
+      padding-left: 0.5rem;
+      .closeBtn{
+        float: right;
+        margin-right: 1rem;
+        cursor: pointer;
+        display: none;
+      }
+      h4{
+        font-size: 1.4rem;
+        font-weight: 500;
+        line-height: 3rem;
+        background: url("../img/folder.jpg") 0 5px no-repeat;
+        background-size: 25px;
+        padding-left: 3rem;
+        &:hover{
+          .closeBtn{
+            display: block;
+          }
+        }
+      }
+      ul{
+        list-style: none;
+        li{
+          cursor: pointer;
+          line-height: 3rem;
+          font-size: 1.3rem;
+          background: url("../img/file.png") 20px 7px no-repeat;
+          background-size: 25px;
+          padding-left: 4.3rem;
+          &:hover{
+            .closeBtn{
+              display: block;
+            }
+          }
+        }
+      }
+    }
+    #addBtn{
+      padding-left: 1rem;
+      text-align: start;
+      cursor: pointer;
+      width: 100%;
+      line-height: 3rem;
+      position: absolute;
+      bottom: 0;
+      background: #eee;
+      border:none;
+      border-top:1px solid #dedede;
+      outline: none;
+      span{
+        text-align: center;
+        vertical-align: middle;
+        font-size: 3rem;
+        font-weight: 800  ;
+        -webkit-transition: 1s;
+        -moz-transition: 1s;
+        -ms-transition: 1s;
+        -o-transition: 1s;
+        transition: 1s;
+      }
+      &:hover{
+        span{
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+}
+#mask{
+  width: 100%;
+  background-color: rgba(0,0,0,0.8);
+  position: fixed;
+  top:0;
+  bottom:0;
+  display: none;
+  #createTask{
+    margin: 10rem auto;
+    width: 50%;
+    height: 50%;
+    background-color: #fff;
+    border-radius: 1rem;
+    padding: 1rem;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+    h2{
+      font-size: 3rem;
+    }
+    input{
+      outline: none;
+    }
+    .taskName{
+      cursor: text;
+      border-radius: 0.5rem;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      width: 30%;
+      height: 2rem;
+      font-size: 1.6rem;
+      padding-left: 0.5rem;
+    }
+    span{
+      font-size: 1.5rem;
+    }
+    button{
+      position: absolute;
+      bottom: 8%;
+      width: 20%;
+      height:15%;
+      background-color: #eb4a4b;
+      border:none;
+      outline: none;
+      color: #fff;
+      font-size: 1.6rem;
+    }
+    #okBtn{
+      left:10%;
+    }
+    #noBtn{
+      right:10%;
+    }
+  }
+}
