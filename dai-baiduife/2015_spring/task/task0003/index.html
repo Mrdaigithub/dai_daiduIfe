@@ -12,12 +12,14 @@
 <div class="main">
     <div class="left">
         <h2>所有任务 (<span>0</span>)</h2>
-        <h2>分类列表</h2>
-        <div class="tasklist">
-            <h4>默认分类 (<span>0</span>)<span class="closeBtn">X</span></h4>
-            <ul>
-                <li>task (<span>0</span>)<span class="closeBtn">X</span></li>
-            </ul>
+        <div id="taskBox">
+            <h2>分类列表</h2>
+            <div class="tasklist">
+                <h4><span class="tasklistTitleName">默认分类</span> <span class="tasklistTitleNum">(0)</span><span class="closeBtn">X</span></h4>
+                <ul>
+                    <li><span class="tasklistChildName">task</span> <span class="tasklistChildNum">(0)</span><span class="closeBtn">X</span></li>
+                </ul>
+            </div>
         </div>
         <button id="addBtn"><span>+</span> 新增分类</button>
     </div>
@@ -25,7 +27,7 @@
 <div id="mask">
     <div id="createTask">
         <h2>Please enter a task name:</h2>
-        <input type="text" class="taskName">
+        <input type="text" id="taskName">
         <br>
         <span label="task">父分类 </span>
         <input type="radio" name="task" checked="checked" value="parent">

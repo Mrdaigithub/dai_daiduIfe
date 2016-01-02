@@ -5,6 +5,10 @@
 }
 html,body{
   font-size: 10px;
+  -moz-user-select:none;
+  -webkit-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
 }
 header{
   background-color: #ddd;
@@ -29,39 +33,42 @@ header{
       line-height: 3rem;
       padding-left: 0.5rem;
     }
-    .tasklist{
-      padding-left: 0.5rem;
-      .closeBtn{
-        float: right;
-        margin-right: 1rem;
-        cursor: pointer;
-        display: none;
-      }
-      h4{
-        font-size: 1.4rem;
-        font-weight: 500;
-        line-height: 3rem;
-        background: url("../img/folder.jpg") 0 5px no-repeat;
-        background-size: 25px;
-        padding-left: 3rem;
-        &:hover{
-          .closeBtn{
-            display: block;
-          }
-        }
-      }
-      ul{
-        list-style: none;
-        li{
+    #taskBox{
+      overflow-y: scroll;
+      .tasklist{
+        padding-left: 0.5rem;
+        .closeBtn{
+          float: right;
+          margin-right: 1rem;
           cursor: pointer;
+          display: none;
+        }
+        h4{
+          font-size: 1.4rem;
+          font-weight: 500;
           line-height: 3rem;
-          font-size: 1.3rem;
-          background: url("../img/file.png") 20px 7px no-repeat;
+          background: url("../img/folder.jpg") 0 5px no-repeat;
           background-size: 25px;
-          padding-left: 4.3rem;
+          padding-left: 3rem;
           &:hover{
             .closeBtn{
               display: block;
+            }
+          }
+        }
+        ul{
+          list-style: none;
+          li{
+            cursor: pointer;
+            line-height: 3rem;
+            font-size: 1.3rem;
+            background: url("../img/file.png") 20px 7px no-repeat;
+            background-size: 25px;
+            padding-left: 4.3rem;
+            &:hover{
+              .closeBtn{
+                display: block;
+              }
             }
           }
         }
@@ -121,7 +128,7 @@ header{
     input{
       outline: none;
     }
-    .taskName{
+    #taskName{
       cursor: text;
       border-radius: 0.5rem;
       margin-top: 2rem;

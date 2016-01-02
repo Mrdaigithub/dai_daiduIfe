@@ -4,7 +4,11 @@
   cursor: default; }
 
 html, body {
-  font-size: 10px; }
+  font-size: 10px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
 
 header {
   background-color: #ddd; }
@@ -26,33 +30,35 @@ header {
     font-weight: 500;
     line-height: 3rem;
     padding-left: 0.5rem; }
-  .main .left .tasklist {
-    padding-left: 0.5rem; }
-    .main .left .tasklist .closeBtn {
-      float: right;
-      margin-right: 1rem;
-      cursor: pointer;
-      display: none; }
-    .main .left .tasklist h4 {
-      font-size: 1.4rem;
-      font-weight: 500;
-      line-height: 3rem;
-      background: url("../img/folder.jpg") 0 5px no-repeat;
-      background-size: 25px;
-      padding-left: 3rem; }
-      .main .left .tasklist h4:hover .closeBtn {
-        display: block; }
-    .main .left .tasklist ul {
-      list-style: none; }
-      .main .left .tasklist ul li {
+  .main .left #taskBox {
+    overflow-y: scroll; }
+    .main .left #taskBox .tasklist {
+      padding-left: 0.5rem; }
+      .main .left #taskBox .tasklist .closeBtn {
+        float: right;
+        margin-right: 1rem;
         cursor: pointer;
+        display: none; }
+      .main .left #taskBox .tasklist h4 {
+        font-size: 1.4rem;
+        font-weight: 500;
         line-height: 3rem;
-        font-size: 1.3rem;
-        background: url("../img/file.png") 20px 7px no-repeat;
+        background: url("../img/folder.jpg") 0 5px no-repeat;
         background-size: 25px;
-        padding-left: 4.3rem; }
-        .main .left .tasklist ul li:hover .closeBtn {
+        padding-left: 3rem; }
+        .main .left #taskBox .tasklist h4:hover .closeBtn {
           display: block; }
+      .main .left #taskBox .tasklist ul {
+        list-style: none; }
+        .main .left #taskBox .tasklist ul li {
+          cursor: pointer;
+          line-height: 3rem;
+          font-size: 1.3rem;
+          background: url("../img/file.png") 20px 7px no-repeat;
+          background-size: 25px;
+          padding-left: 4.3rem; }
+          .main .left #taskBox .tasklist ul li:hover .closeBtn {
+            display: block; }
   .main .left #addBtn {
     padding-left: 1rem;
     text-align: start;
@@ -99,7 +105,7 @@ header {
       font-size: 3rem; }
     #mask #createTask input {
       outline: none; }
-    #mask #createTask .taskName {
+    #mask #createTask #taskName {
       cursor: text;
       border-radius: 0.5rem;
       margin-top: 2rem;
