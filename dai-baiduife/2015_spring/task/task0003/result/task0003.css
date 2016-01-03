@@ -1,3 +1,9 @@
+.fl {
+  float: left; }
+
+.fr {
+  float: right; }
+
 * {
   margin: 0;
   padding: 0;
@@ -18,20 +24,44 @@ header {
     line-height: 5rem;
     text-indent: 1.5rem; }
 
-.main .left {
-  width: 20%;
-  background-color: #f2f2f2;
-  position: absolute;
-  top: 5rem;
-  bottom: 0;
-  border-right: 1px solid #e3e3e3; }
-  .main .left h2 {
-    font-size: 1.8rem;
-    font-weight: 500;
+.main {
+  display: -webkit-flex; }
+  .main .addBtn {
+    padding-left: 1rem;
+    text-align: start;
+    cursor: pointer;
+    width: 20rem;
     line-height: 3rem;
-    padding-left: 0.5rem; }
-  .main .left #taskBox {
-    overflow-y: scroll; }
+    position: fixed;
+    bottom: 0;
+    background: #eee;
+    border: none;
+    border-top: 1px solid #dedede;
+    outline: none; }
+    .main .addBtn span {
+      text-align: center;
+      vertical-align: middle;
+      font-size: 3rem;
+      font-weight: 800;
+      -webkit-transition: 1s;
+      -moz-transition: 1s;
+      -ms-transition: 1s;
+      -o-transition: 1s;
+      transition: 1s; }
+    .main .addBtn:hover span {
+      transform: rotate(180deg); }
+  .main .left {
+    width: 20rem;
+    height: 100%;
+    background-color: #f2f2f2;
+    position: relative;
+    border-right: 1px solid #e3e3e3;
+    overflow-y: auto; }
+    .main .left h2 {
+      font-size: 1.8rem;
+      font-weight: 500;
+      line-height: 3rem;
+      padding-left: 0.5rem; }
     .main .left #taskBox .tasklist {
       padding-left: 0.5rem; }
       .main .left #taskBox .tasklist .closeBtn {
@@ -59,30 +89,34 @@ header {
           padding-left: 4.3rem; }
           .main .left #taskBox .tasklist ul li:hover .closeBtn {
             display: block; }
-  .main .left #addBtn {
-    padding-left: 1rem;
-    text-align: start;
-    cursor: pointer;
-    width: 100%;
-    line-height: 3rem;
-    position: absolute;
-    bottom: 0;
-    background: #eee;
-    border: none;
-    border-top: 1px solid #dedede;
-    outline: none; }
-    .main .left #addBtn span {
-      text-align: center;
-      vertical-align: middle;
-      font-size: 3rem;
-      font-weight: 800;
-      -webkit-transition: 1s;
-      -moz-transition: 1s;
-      -ms-transition: 1s;
-      -o-transition: 1s;
-      transition: 1s; }
-    .main .left #addBtn:hover span {
-      transform: rotate(180deg); }
+  .main .middle {
+    -webkit-flex: 1;
+    border-right: 1px solid #dedede; }
+    .main .middle .title {
+      line-height: 3rem;
+      border-top: 1px solid #dedede;
+      border-bottom: 1px solid #dedede;
+      background-color: #eee;
+      text-align: center; }
+      .main .middle .title a {
+        cursor: pointer;
+        border: 1px solid #eee;
+        border-radius: 1rem;
+        padding: 0.4rem 1rem;
+        margin: 0 3%;
+        color: #000;
+        text-decoration: none; }
+    .main .middle .dataTask {
+      font-size: 1.4rem; }
+      .main .middle .dataTask .data {
+        background-color: #FAFAEE;
+        line-height: 3rem;
+        text-indent: 2rem; }
+      .main .middle .dataTask .dayTask {
+        line-height: 2.5rem;
+        text-indent: 3.5rem; }
+  .main .right {
+    -webkit-flex: 2.5; }
 
 #mask {
   width: 100%;

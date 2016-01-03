@@ -1,3 +1,9 @@
+.fl{
+  float: left;
+}
+.fr{
+  float: right;
+}
 *{
   margin: 0;
   padding:0;
@@ -20,13 +26,43 @@ header{
   }
 }
 .main{
-  .left{
-    width: 20%;
-    background-color: #f2f2f2;
-    position: absolute;
-    top:5rem;
+  display: -webkit-flex;
+  .addBtn{
+    padding-left: 1rem;
+    text-align: start;
+    cursor: pointer;
+    width: 20rem;
+    line-height: 3rem;
+    position: fixed;
     bottom: 0;
+    background: #eee;
+    border:none;
+    border-top:1px solid #dedede;
+    outline: none;
+    span{
+      text-align: center;
+      vertical-align: middle;
+      font-size: 3rem;
+      font-weight: 800  ;
+      -webkit-transition: 1s;
+      -moz-transition: 1s;
+      -ms-transition: 1s;
+      -o-transition: 1s;
+      transition: 1s;
+    }
+    &:hover{
+      span{
+        transform: rotate(180deg);
+      }
+    }
+  }
+  .left{
+    width: 20rem;
+    height:100%;
+    background-color: #f2f2f2;
+    position: relative;
     border-right: 1px solid #e3e3e3;
+    overflow-y: auto;
     h2{
       font-size: 1.8rem;
       font-weight: 500;
@@ -34,7 +70,6 @@ header{
       padding-left: 0.5rem;
     }
     #taskBox{
-      overflow-y: scroll;
       .tasklist{
         padding-left: 0.5rem;
         .closeBtn{
@@ -74,37 +109,44 @@ header{
         }
       }
     }
-    #addBtn{
-      padding-left: 1rem;
-      text-align: start;
-      cursor: pointer;
-      width: 100%;
+  }
+  .middle{
+    -webkit-flex: 1;
+    border-right: 1px solid #dedede;
+    .title{
       line-height: 3rem;
-      position: absolute;
-      bottom: 0;
-      background: #eee;
-      border:none;
-      border-top:1px solid #dedede;
-      outline: none;
-      span{
-        text-align: center;
-        vertical-align: middle;
-        font-size: 3rem;
-        font-weight: 800  ;
-        -webkit-transition: 1s;
-        -moz-transition: 1s;
-        -ms-transition: 1s;
-        -o-transition: 1s;
-        transition: 1s;
+      border-top: 1px solid #dedede;
+      border-bottom: 1px solid #dedede;
+      background-color: #eee;
+      text-align: center;
+      a{
+        cursor: pointer;
+        border:1px solid #eee;
+        border-radius: 1rem;
+        padding: 0.4rem 1rem;
+        margin: 0 3%;
+        color: #000;
+        text-decoration: none;
       }
-      &:hover{
-        span{
-          transform: rotate(180deg);
-        }
+    }
+    .dataTask{
+      font-size: 1.4rem;
+      .data{
+        background-color: #FAFAEE;
+        line-height: 3rem;
+        text-indent: 2rem;
+      }
+      .dayTask{
+        line-height: 2.5rem;
+        text-indent: 3.5rem;
       }
     }
   }
+  .right{
+    -webkit-flex: 2.5;
+  }
 }
+
 #mask{
   width: 100%;
   background-color: rgba(0,0,0,0.8);
