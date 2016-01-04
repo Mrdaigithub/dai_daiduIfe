@@ -98,12 +98,62 @@
 
 
     //middle界面
+    let rightTitle = document.getElementsByClassName('rightTitle'),
+        rightTitleName = document.getElementById('rightTitleName'),
+        inuptTaskName = document.getElementById('inuptTaskName'),
+        rightDateSpan = document.getElementById('rightDateSpan'),
+        inputDate = document.getElementById('inputDate'),
+        rightContentRead = document.getElementById('rightContentRead'),
+        rightContentWrite = document.getElementById('rightContentWrite'),
+        saveBtn = document.getElementById('saveBtn'),
+        btnBox = document.getElementById('btnBox');
+
     middleTitle.addEventListener('click', function (event) {
         let e = window.event || event;
         if (e.target.nodeName === 'A'){
             taskListChecked.style.backgroundColor = null;
             e.target.style.backgroundColor = 'rgb(255, 255, 255)';
             taskListChecked = e.target;
+        }
+    },false);
+
+    //按下中间的addbtn按钮，添加task，修改rightBar界面
+    addBtn[1].addEventListener('click', function () {
+
+        //修改task标题
+        rightTitleName.style.display = 'none';
+        inuptTaskName.style.display = 'block';
+
+        //修改task Date
+        rightDateSpan.style.display = 'none';
+        inputDate.style.display = 'inline-block';
+
+        //修改taskContent
+        rightContentRead.style.display = 'none';
+        rightContentWrite.style.display = 'block';
+
+        //编辑状态下完成按钮消失
+        btnBox.style.display = 'none';
+    },false);
+
+    //按下save按钮
+    saveBtn.addEventListener('click', function (event) {
+        let e = window.event || event;
+        if (e.target === this.children[1]){
+            //修改task标题
+            rightTitleName.style.display = 'block';
+            inuptTaskName.style.display = 'none';
+
+            //修改task Date
+            rightDateSpan.style.display = 'inline-block';
+            inputDate.style.display = 'none';
+
+            //修改taskContent
+            rightContentRead.style.display = 'block';
+            rightContentWrite.style.display = 'none';
+
+            //未编辑状态下完成按钮出现
+            btnBox.style.display = 'block';
         }
     },false)
 })();

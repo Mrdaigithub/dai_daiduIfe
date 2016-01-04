@@ -15,9 +15,17 @@
         <div id="taskBox">
             <h2>分类列表</h2>
             <div class="tasklist">
-                <h4><span class="tasklistTitleName">默认分类</span> <span class="tasklistTitleNum">(0)</span><span class="closeBtn">X</span></h4>
+                <h4>
+                    <span class="tasklistTitleName">默认分类</span>
+                    <span class="tasklistTitleNum">(0)</span>
+                    <span class="closeBtn">X</span>
+                </h4>
                 <ul>
-                    <li><span class="tasklistChildName">task</span> <span class="tasklistChildNum">(0)</span><span class="closeBtn">X</span></li>
+                    <li>
+                        <span class="tasklistChildName">README</span>
+                        <span class="tasklistChildNum">(0)</span>
+                        <span class="closeBtn">X</span>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -39,7 +47,28 @@
         </div>
         <button class="addBtn"><span>+</span> 新增分类</button>
     </div>
-    <div class="right"></div>
+    <div class="right">
+        <div class="rightTitle">
+            <span id="rightTitleName" style="display: block;" class="fl">README</span>
+            <input type="text" placeholder="写个任务名称吧" style="display: none;" id="inuptTaskName" class="fl">
+            <div id="btnBox" style="display: block;">
+                <a href="javascript:;" class="completeBtn"></a>
+                <a href="javascript:;" class="editBtn"></a>
+            </div>
+        </div>
+        <div class="rightDate">
+            任务日期：<span id="rightDateSpan" style="display: inline-block">2016-01-03</span>
+            <input id="inputDate" type="text" placeholder="格式：201x-xx-xx" style="display: none">
+        </div>
+        <div class="rightContent">
+            <p id="rightContentRead">俗套的xx管理系统...   随便怎么玩吧~俗套的xx管理系统...   随便怎么玩吧~俗套的xx管理系统...   随便怎么玩吧~俗套的xx管理系统...   随便怎么玩吧~俗套的xx管理系统...   随便怎么玩吧~俗套的xx管理系统...   随便怎么玩吧~俗套的xx管理系统...   随便怎么玩吧~俗套的xx管理系统...   随便怎么玩吧~俗套的xx管理系统...   随便怎么玩吧~</p>
+            <textarea style="display: none" id="rightContentWrite" placeholder="在这里写点什么...">俗套的xx管理系统...   随便怎么玩吧~</textarea>
+            <div id="saveBtn">
+                <button class="giveUp">放弃修改</button>
+                <button class="save">保存</button>
+            </div>
+        </div>
+    </div>
 </div>
 <div id="mask">
     <div id="createTask">

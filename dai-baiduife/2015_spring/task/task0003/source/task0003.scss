@@ -130,7 +130,7 @@ header{
       }
     }
     .dataTask{
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       .data{
         background-color: #FAFAEE;
         line-height: 3rem;
@@ -139,14 +139,113 @@ header{
       .dayTask{
         line-height: 2.5rem;
         text-indent: 3.5rem;
+        li{
+          font-weight: 300;
+          font-size: 1.4rem;
+          cursor: pointer;
+        }
       }
     }
   }
   .right{
     -webkit-flex: 2.5;
+    font-size: 1.5rem;
+    position: relative;
+    .rightTitle{
+      background-color: #eee;
+      font-size: 2rem;
+      font-weight: 600;
+      line-height: 3.5rem;
+      height:3.5rem;
+      padding:1rem 0 1rem 1rem;
+      text-indent: 2rem;
+      input{
+        cursor: text;
+        width: 30%;
+        height: 2.5rem;
+        font-size: 1.6rem;
+        text-indent: 0.5rem;
+      }
+      #btnBox{
+        float: right;
+        a{
+          width: 30px;
+          height:30px;
+          display: inline-block;
+          vertical-align: middle;
+          background-size: 30px 30px;
+          margin-right: 2rem;
+          cursor: pointer;
+        }
+        .completeBtn{
+          background-image: url("../img/complete.png");
+        }
+        .editBtn{
+          background-image: url("../img/edit.png");
+        }
+      }
+    }
+    .rightDate{
+      background-color: #FAFAEE;
+      line-height: 4rem;
+      text-indent: 2rem;
+      input{
+        width: 20%;
+        height: 2rem;
+        line-height: 2rem;
+        text-indent: 0.5rem;
+        cursor: text;
+      }
+    }
+    .rightContent{
+      #rightContentRead{
+        padding:1rem 1rem 0 1rem;
+      }
+      #rightContentWrite{
+        cursor: text;
+        width: 95%;
+        height: 30rem;
+        border:none;
+        resize: none;
+        outline: none;
+        -moz-user-select:text;
+        -webkit-user-select:text;
+        -ms-user-select:text;
+        user-select:text;
+        padding:1rem 1rem 0 1rem;
+      }
+      #saveBtn{
+        position: absolute;
+        bottom:5%;
+        right:5%;
+        button{
+          padding: 0 1rem;
+          line-height: 3rem;
+          color: #fff;
+          border-radius: 5rem;
+          text-align: center;
+          float: right;
+          outline:none;
+        }
+        .save{
+          background: #0088FF;
+        }
+        .giveUp{
+          background: #DD4E42;
+        }
+      }
+    }
   }
 }
+//已完成任务添加的图标
 
+.taskCpmplete{
+  background-image: url("../img/taskcomplete.png");
+  background-size: 1.8rem 1.8rem;
+  background-repeat: no-repeat;
+  background-position: 1.4rem 0.3rem;
+}
+//leftBar 按下addBtn出现的添加界面
 #mask{
   width: 100%;
   background-color: rgba(0,0,0,0.8);
