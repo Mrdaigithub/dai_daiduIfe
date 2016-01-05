@@ -89,6 +89,8 @@ header {
           padding-left: 4.3rem; }
           .main .left #taskBox .tasklist ul li:hover .closeBtn {
             display: block; }
+          .main .left #taskBox .tasklist ul li span {
+            cursor: pointer; }
   .main .middle {
     -webkit-flex: 1;
     border-right: 1px solid #dedede; }

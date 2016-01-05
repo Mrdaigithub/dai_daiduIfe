@@ -8,6 +8,7 @@
         middle = DOC.getElementsByClassName('middle')[0],
         addBtn = DOC.getElementsByClassName('addBtn'),
         middleTitle = DOC.getElementsByClassName('title')[0];
+
     var folderListChecked = null,
         taskListChecked = middleTitle.children[0];
 
@@ -21,88 +22,241 @@
         addBtn[1].style.width = window.getComputedStyle(middle, null).width || middle.currentStyle.width;
     }, false);
 
+    //删除localstorage
+    function removeLocalData(isFolder, name) {
+        var data = JSON.parse(localStorage.getItem('localData'));
+
+        //删除localstorage文件夹
+        if (isFolder) {
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].folderName === name) {
+                    data.splice(i, 1);
+                    localStorage.setItem('localData', JSON.stringify(data));
+                    break;
+                }
+            }
+        } else {
+            console.log(name);
+            //删除localstorage单文件
+            for (var i = 0; i < data.length; i++) {
+                for (var j = 0; j < data[i].fileNames.length; j++) {
+                    if (data[i].fileNames[j] === name) {
+                        data[i].fileNames.splice(j, 1);
+                        localStorage.setItem('localData', JSON.stringify(data));
+                        return 0;
+                    }
+                }
+            }
+        }
+    }
+
+    //分类列表删除
     taskBox.addEventListener('click', function (event) {
         var e = window.event || event;
-        //分类列表删除
 
         //删除分类文件夹
         if (e.target.className === 'closeBtn' && e.target.parentNode.nodeName === 'H4') {
             if (confirm('Are you sure ?')) {
                 e.target.parentNode.parentNode.parentNode.removeChild(e.target.parentNode.parentNode);
+                removeLocalData(true, e.target.parentNode.children[0].innerText);
             }
         } else if (e.target.className === 'closeBtn' && e.target.parentNode.nodeName === 'LI') {
             //删除分类task单文件
             if (confirm('Are you sure ?')) {
                 e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+                removeLocalData(false, e.target.parentNode.children[0].innerText);
             }
-        } else if (e.target.nodeName === 'H4' || e.target.nodeName === 'LI') {
+        } else if (e.target.nodeName === 'H4' || e.target.nodeName === 'LI' || e.target.parentNode.nodeName === 'H4' || e.target.parentNode.nodeName === 'LI') {
+
             //分类列表添加选中背景
+
+            //清除上次选中的背景
             if (folderListChecked) {
                 folderListChecked.style.backgroundColor = null;
             }
-            e.target.style.backgroundColor = 'rgb(255,255,255)';
-            folderListChecked = e.target;
+            if (e.target.parentNode.nodeName === 'H4') {
+                e.target.parentNode.style.backgroundColor = 'rgb(255,255,255)';
+                //设置标记
+                folderListChecked = e.target.parentNode;
+            } else if (e.target.parentNode.nodeName === 'LI') {
+                e.target.parentNode.style.backgroundColor = 'rgb(255,255,255)';
+                //设置标记
+                folderListChecked = e.target.parentNode;
+            } else {
+                e.target.style.backgroundColor = 'rgb(255,255,255)';
+                //设置标记
+                folderListChecked = e.target;
+            }
+        }
+    }, false);
+
+    //双击文件夹隐藏显示子文件
+    taskBox.addEventListener('dblclick', function (event) {
+        var e = window.event || event;
+        if (e.target.nodeName === 'H4') {
+            if (e.target.parentNode.children[1].style.display === 'block') {
+                e.target.parentNode.children[1].style.display = 'none';
+            } else {
+                e.target.parentNode.children[1].style.display = 'block';
+            }
+        } else if (e.target.parentNode.nodeName === 'H4') {
+            if (e.target.parentNode.parentNode.children[1].style.display === 'block') {
+                e.target.parentNode.parentNode.children[1].style.display = 'none';
+            } else {
+                e.target.parentNode.parentNode.children[1].style.display = 'block';
+            }
         }
     }, false);
 
     //add遮罩层
-    var leftBar = DOC.getElementsByClassName('left')[0],
-        mask = DOC.getElementById('mask'),
+    var mask = DOC.getElementById('mask'),
         createTask = DOC.getElementById('createTask'),
         taskName = DOC.getElementById('taskName'),
         bigTask = tasklist[0].cloneNode(true),
         smallTask = tasklist[0].getElementsByTagName('ul')[0].getElementsByTagName('li')[0].cloneNode(true),
-        ul = document.createElement('ul');
+        ul = DOC.createElement('ul');
+    ul.style.display = 'block';
     bigTask.removeChild(bigTask.children[1]);
     bigTask.appendChild(ul);
+
+    var localData = [];
+
+    //添加分类文件夹函数
+    function addFolder(taskNameVal) {
+        var copyBigTask = bigTask.cloneNode(true);
+
+        copyBigTask.children[0].children[0].innerText = taskNameVal;
+        taskNameVal = null;
+        taskBox.appendChild(copyBigTask);
+        mask.style.display = 'none';
+    }
+
+    //手动添加task文件函数
+    function addFile(taskNameVal) {
+        var copySmallTask = smallTask.cloneNode(true);
+        copySmallTask.children[0].innerText = taskNameVal;
+        if (folderListChecked === null) {
+            alert('请先选中要添加task的文件夹~');
+        } else if (folderListChecked.nodeName === 'H4') {
+            folderListChecked.parentNode.children[1].appendChild(copySmallTask);
+        } else if (folderListChecked.nodeName === 'LI') {
+            folderListChecked.parentNode.appendChild(copySmallTask);
+        }
+        taskNameVal = null;
+        mask.style.display = 'none';
+    }
+
+    //页面加载自动添加的task文件函数
+    function autoAddFile(taskNameVal, folder) {
+        var copySmallTask = smallTask.cloneNode(true);
+        copySmallTask.children[0].innerText = taskNameVal;
+        folder.children[1].appendChild(copySmallTask);
+    }
+
+    //遍历数组找到对应的folder目录下
+    function findFolder() {
+        for (var i = 0; i < localData.length; i++) {
+            if (folderListChecked.children[0].innerText === localData[i].folderName) {
+                return i;
+            }
+        }
+    }
+
+    //检测创建文件夹或文件是否重名
+    function isRepeat(isFolder, taskNameVal) {
+        if (localData !== null) {
+            if (isFolder) {
+                for (var i = 0; i < localData.length; i++) {
+                    if (localData[i].folderName === taskNameVal) {
+                        return true;
+                    }
+                }
+            } else {
+                for (var i = 0; i < localData.length; i++) {
+                    for (var j = 0; j < localData[i].fileNames.length; j++) {
+                        if (localData[i].fileNames[j] === taskNameVal) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     //按下新增分类
-    addBtn[0].addEventListener('click', function (event) {
-        var e = window.event || event;
+    addBtn[0].addEventListener('click', function () {
         mask.style.display = 'block';
     }, false);
 
     //操作在创建分类界面
     createTask.addEventListener('click', function (event) {
         var e = window.event || event;
+
+        localData = JSON.parse(localStorage.getItem('localData'));
+        if (localData === null) {
+            localData = [];
+        }
+        console.log(localData);
         //按下close关闭遮罩层
         if (e.target.id === 'noBtn') {
             mask.style.display = 'none';
         } else if (e.target.id === 'okBtn') {
-            var taskNameVal = taskName.value;
-            var cheackParentsBtn = createTask.getElementsByTagName('input')[1];
+            var checkParentsBtn = createTask.getElementsByTagName('input')[1];
+
             //添加分类文件夹
-            if (cheackParentsBtn.checked) {
-                var copyBigTask = bigTask.cloneNode(true);
-                copyBigTask.children[0].children[0].innerText = taskName.value;
-                taskName.value = null;
-                taskBox.appendChild(copyBigTask);
-                mask.style.display = 'none';
-            } else {
-                var copySmallTask = smallTask.cloneNode(true);
-                copySmallTask.children[0].innerText = taskName.value;
-                if (folderListChecked === null) {
-                    alert('请先选中要添加task的文件夹！！');
-                } else if (folderListChecked.nodeName === 'H4') {
-                    folderListChecked.parentNode.children[1].appendChild(copySmallTask);
-                } else if (folderListChecked.nodeName === 'LI') {
-                    folderListChecked.parentNode.appendChild(copySmallTask);
+            if (checkParentsBtn.checked) {
+                if (isRepeat(true, taskName.value)) {
+                    alert('重复创建');
+                    return 0;
+                } else {
+                    addFolder(taskName.value);
+                    var folder = {
+                        folderName: taskName.value,
+                        fileNames: []
+                    };
+                    localData.push(folder);
                 }
-                taskName.value = null;
-                mask.style.display = 'none';
+            } else {
+                if (isRepeat(false, taskName.value)) {
+                    alert('重复创建');
+                    return 0;
+                } else {
+                    //添加分类文件下的子文件
+                    addFile(taskName.value);
+                    if (folderListChecked.nodeName === 'H4') {
+                        var i = findFolder();
+                        localData[i].fileNames.push(taskName.value);
+                    }
+                }
             }
         }
+        localStorage.setItem('localData', JSON.stringify(localData));
     }, false);
 
+    //初始化页面加载localstorage,添加task文件夹和子文件
+    (function () {
+        var taskData = JSON.parse(localStorage.getItem('localData'));
+        if (taskData !== null) {
+            for (var i = 0; i < taskData.length; i++) {
+                addFolder(taskData[i].folderName);
+                for (var j = 0; j < taskData[i].fileNames.length; j++) {
+                    autoAddFile(taskData[i].fileNames[j], tasklist[i + 1]);
+                }
+            }
+        }
+    })();
+
     //middle界面
-    var rightTitle = document.getElementsByClassName('rightTitle'),
-        rightTitleName = document.getElementById('rightTitleName'),
-        inuptTaskName = document.getElementById('inuptTaskName'),
-        rightDateSpan = document.getElementById('rightDateSpan'),
-        inputDate = document.getElementById('inputDate'),
-        rightContentRead = document.getElementById('rightContentRead'),
-        rightContentWrite = document.getElementById('rightContentWrite'),
-        saveBtn = document.getElementById('saveBtn'),
-        btnBox = document.getElementById('btnBox');
+    var rightTitle = DOC.getElementsByClassName('rightTitle'),
+        rightTitleName = DOC.getElementById('rightTitleName'),
+        inuptTaskName = DOC.getElementById('inuptTaskName'),
+        rightDateSpan = DOC.getElementById('rightDateSpan'),
+        inputDate = DOC.getElementById('inputDate'),
+        rightContentRead = DOC.getElementById('rightContentRead'),
+        rightContentWrite = DOC.getElementById('rightContentWrite'),
+        saveBtn = DOC.getElementById('saveBtn'),
+        btnBox = DOC.getElementById('btnBox');
 
     middleTitle.addEventListener('click', function (event) {
         var e = window.event || event;
