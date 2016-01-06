@@ -108,16 +108,16 @@ header {
         margin: 0 3%;
         color: #000;
         text-decoration: none; }
-    .main .middle .dataTask {
+    .main .middle #dataTaskBox .dataTask {
       font-size: 1.5rem; }
-      .main .middle .dataTask .data {
+      .main .middle #dataTaskBox .dataTask div {
         background-color: #FAFAEE;
         line-height: 3rem;
         text-indent: 2rem; }
-      .main .middle .dataTask .dayTask {
+      .main .middle #dataTaskBox .dataTask ul {
         line-height: 2.5rem;
         text-indent: 3.5rem; }
-        .main .middle .dataTask .dayTask li {
+        .main .middle #dataTaskBox .dataTask ul li {
           font-weight: 300;
           font-size: 1.4rem;
           cursor: pointer; }

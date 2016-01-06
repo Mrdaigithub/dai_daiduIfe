@@ -132,20 +132,22 @@ header{
         text-decoration: none;
       }
     }
-    .dataTask{
-      font-size: 1.5rem;
-      .data{
-        background-color: #FAFAEE;
-        line-height: 3rem;
-        text-indent: 2rem;
-      }
-      .dayTask{
-        line-height: 2.5rem;
-        text-indent: 3.5rem;
-        li{
-          font-weight: 300;
-          font-size: 1.4rem;
-          cursor: pointer;
+    #dataTaskBox{
+      .dataTask{
+        font-size: 1.5rem;
+        div{
+          background-color: #FAFAEE;
+          line-height: 3rem;
+          text-indent: 2rem;
+        }
+        ul{
+          line-height: 2.5rem;
+          text-indent: 3.5rem;
+          li{
+            font-weight: 300;
+            font-size: 1.4rem;
+            cursor: pointer;
+          }
         }
       }
     }

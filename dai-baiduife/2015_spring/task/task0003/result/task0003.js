@@ -10,7 +10,8 @@
         middleTitle = DOC.getElementsByClassName('title')[0];
 
     var folderListChecked = null,
-        taskListChecked = middleTitle.children[0];
+        taskListChecked = middleTitle.children[0],
+        localData = [];
 
     //控制addBtn高度&&宽度
     main.style.height = window.innerHeight - 60 + 'px';
@@ -18,7 +19,6 @@
     addBtn[1].style.width = middle.innerWidth;
     window.addEventListener('resize', function () {
         main.style.height = window.innerHeight - 60 + 'px';
-        console.log(window.getComputedStyle(middle, null).width);
         addBtn[1].style.width = window.getComputedStyle(middle, null).width || middle.currentStyle.width;
     }, false);
 
@@ -36,12 +36,11 @@
                 }
             }
         } else {
-            console.log(name);
             //删除localstorage单文件
             for (var i = 0; i < data.length; i++) {
-                for (var j = 0; j < data[i].fileNames.length; j++) {
-                    if (data[i].fileNames[j] === name) {
-                        data[i].fileNames.splice(j, 1);
+                for (var j = 0; j < data[i].files.length; j++) {
+                    if (data[i].files[j].fileName === name) {
+                        data[i].files.splice(j, 1);
                         localStorage.setItem('localData', JSON.stringify(data));
                         return 0;
                     }
@@ -119,14 +118,11 @@
     bigTask.removeChild(bigTask.children[1]);
     bigTask.appendChild(ul);
 
-    var localData = [];
-
     //添加分类文件夹函数
     function addFolder(taskNameVal) {
         var copyBigTask = bigTask.cloneNode(true);
 
         copyBigTask.children[0].children[0].innerText = taskNameVal;
-        taskNameVal = null;
         taskBox.appendChild(copyBigTask);
         mask.style.display = 'none';
     }
@@ -142,11 +138,11 @@
         } else if (folderListChecked.nodeName === 'LI') {
             folderListChecked.parentNode.appendChild(copySmallTask);
         }
-        taskNameVal = null;
+
         mask.style.display = 'none';
     }
 
-    //页面加载自动添加的task文件函数
+    //页面加载自动添加的files文件函数
     function autoAddFile(taskNameVal, folder) {
         var copySmallTask = smallTask.cloneNode(true);
         copySmallTask.children[0].innerText = taskNameVal;
@@ -173,8 +169,8 @@
                 }
             } else {
                 for (var i = 0; i < localData.length; i++) {
-                    for (var j = 0; j < localData[i].fileNames.length; j++) {
-                        if (localData[i].fileNames[j] === taskNameVal) {
+                    for (var j = 0; j < localData[i].files.length; j++) {
+                        if (localData[i].files[j].fileName === taskNameVal) {
                             return true;
                         }
                     }
@@ -197,7 +193,6 @@
         if (localData === null) {
             localData = [];
         }
-        console.log(localData);
         //按下close关闭遮罩层
         if (e.target.id === 'noBtn') {
             mask.style.display = 'none';
@@ -213,9 +208,10 @@
                     addFolder(taskName.value);
                     var folder = {
                         folderName: taskName.value,
-                        fileNames: []
+                        files: []
                     };
                     localData.push(folder);
+                    taskName.value = null;
                 }
             } else {
                 if (isRepeat(false, taskName.value)) {
@@ -226,8 +222,13 @@
                     addFile(taskName.value);
                     if (folderListChecked.nodeName === 'H4') {
                         var i = findFolder();
-                        localData[i].fileNames.push(taskName.value);
+                        var fileData = {
+                            fileName: taskName.value,
+                            taskList: []
+                        };
+                        localData[i].files.push(fileData);
                     }
+                    taskName.value = null;
                 }
             }
         }
@@ -240,8 +241,8 @@
         if (taskData !== null) {
             for (var i = 0; i < taskData.length; i++) {
                 addFolder(taskData[i].folderName);
-                for (var j = 0; j < taskData[i].fileNames.length; j++) {
-                    autoAddFile(taskData[i].fileNames[j], tasklist[i + 1]);
+                for (var j = 0; j < taskData[i].files.length; j++) {
+                    autoAddFile(taskData[i].files[j].fileName, tasklist[i + 1]);
                 }
             }
         }
@@ -250,7 +251,7 @@
     //middle界面
     var rightTitle = DOC.getElementsByClassName('rightTitle'),
         rightTitleName = DOC.getElementById('rightTitleName'),
-        inuptTaskName = DOC.getElementById('inuptTaskName'),
+        inputTaskName = DOC.getElementById('inputTaskName'),
         rightDateSpan = DOC.getElementById('rightDateSpan'),
         inputDate = DOC.getElementById('inputDate'),
         rightContentRead = DOC.getElementById('rightContentRead'),
@@ -272,7 +273,7 @@
 
         //修改task标题
         rightTitleName.style.display = 'none';
-        inuptTaskName.style.display = 'block';
+        inputTaskName.style.display = 'block';
 
         //修改task Date
         rightDateSpan.style.display = 'none';
@@ -286,13 +287,73 @@
         btnBox.style.display = 'none';
     }, false);
 
-    //按下save按钮
+    var taskFiles = DOC.createElement('li'),
+        taskFilesBox = DOC.createElement('ul'),
+        taskDate = DOC.createElement('div'),
+        taskList = DOC.createElement('div'),
+        dataTaskBox = DOC.getElementById('dataTaskBox');
+    taskList.className = 'dataTask';
+
+    //得到要保存的task数据
+    function getTaskData() {
+        var data = JSON.parse(localStorage.getItem('localData'));
+        var taskData = {
+            taskName: inputTaskName.value,
+            taskData: inputDate.value,
+            taskContent: rightContentWrite.value,
+            complete: false
+        };
+        for (var i = 0; i < data.length; i++) {
+            for (var j = 0; j < data[i].files.length; j++) {
+                if (data[i].files[j].fileName === folderListChecked.children[0].innerText) {
+                    data[i].files[j].taskList.push(taskData);
+                    return data;
+                }
+            }
+        }
+    }
+
+    //性能爆炸点，修改flag
+    //添加task在middleBar
+    function addTask(localData) {
+        if (localData !== null) {
+
+            //删除上次列表
+            for (var l = dataTaskBox.children.length; l > 0; l--) {
+                dataTaskBox.removeChild(dataTaskBox.children[0]);
+            }
+            for (var i = 0; i < localData.length; i++) {
+                for (var j = 0; j < localData[i].files.length; j++) {
+                    for (var k = 0; k < localData[i].files[j].taskList.length; k++) {
+                        var copyTaskList = taskList.cloneNode(true);
+                        var copyTaskDate = taskDate.cloneNode(true);
+                        var copyTaskFilesBox = taskFilesBox.cloneNode(true);
+                        var copyTaskFiles = taskFiles.cloneNode(true);
+                        copyTaskFiles.innerText = localData[i].files[j].taskList[k].taskName;
+                        copyTaskDate.innerText = localData[i].files[j].taskList[k].taskData;
+                        dataTaskBox.appendChild(copyTaskList);
+                        copyTaskList.appendChild(copyTaskDate);
+                        copyTaskList.appendChild(copyTaskFilesBox);
+                        copyTaskFilesBox.appendChild(copyTaskFiles);
+                    }
+                }
+            }
+        }
+    }
+
+    //加载时添加middle taskList
+    addTask(JSON.parse(localStorage.getItem('localData')));
+
+    //处理task文件
     saveBtn.addEventListener('click', function (event) {
         var e = window.event || event;
+        var taskData = getTaskData();
+
+        //按下save按钮
         if (e.target === this.children[1]) {
             //修改task标题
             rightTitleName.style.display = 'block';
-            inuptTaskName.style.display = 'none';
+            inputTaskName.style.display = 'none';
 
             //修改task Date
             rightDateSpan.style.display = 'inline-block';
@@ -304,6 +365,9 @@
 
             //未编辑状态下完成按钮出现
             btnBox.style.display = 'block';
+
+            localStorage.setItem('localData', JSON.stringify(taskData));
+            addTask(taskData);
         }
     }, false);
 })();
