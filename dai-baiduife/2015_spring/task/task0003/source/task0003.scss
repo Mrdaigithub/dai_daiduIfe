@@ -135,7 +135,7 @@ header{
     #dataTaskBox{
       .dataTask{
         font-size: 1.5rem;
-        div{
+        .taskDate{
           background-color: #FAFAEE;
           line-height: 3rem;
           text-indent: 2rem;
@@ -242,15 +242,14 @@ header{
     }
   }
 }
-//已完成任务添加的图标
 
 .taskCpmplete{
   background-image: url("../img/taskcomplete.png");
   background-size: 1.8rem 1.8rem;
   background-repeat: no-repeat;
   background-position: 1.4rem 0.3rem;
+  color: #499D24;
 }
-//leftBar 按下addBtn出现的添加界面
 #mask{
   width: 100%;
   background-color: rgba(0,0,0,0.8);

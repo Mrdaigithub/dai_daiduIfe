@@ -293,6 +293,7 @@
         taskList = DOC.createElement('div'),
         dataTaskBox = DOC.getElementById('dataTaskBox');
     taskList.className = 'dataTask';
+    taskDate.className = 'taskDate';
 
     //得到要保存的task数据
     function getTaskData() {
@@ -324,17 +325,60 @@
             }
             for (var i = 0; i < localData.length; i++) {
                 for (var j = 0; j < localData[i].files.length; j++) {
-                    for (var k = 0; k < localData[i].files[j].taskList.length; k++) {
-                        var copyTaskList = taskList.cloneNode(true);
-                        var copyTaskDate = taskDate.cloneNode(true);
-                        var copyTaskFilesBox = taskFilesBox.cloneNode(true);
-                        var copyTaskFiles = taskFiles.cloneNode(true);
-                        copyTaskFiles.innerText = localData[i].files[j].taskList[k].taskName;
-                        copyTaskDate.innerText = localData[i].files[j].taskList[k].taskData;
-                        dataTaskBox.appendChild(copyTaskList);
-                        copyTaskList.appendChild(copyTaskDate);
-                        copyTaskList.appendChild(copyTaskFilesBox);
-                        copyTaskFilesBox.appendChild(copyTaskFiles);
+                    for (var k = 0; k < localData[i].files[j].taskList.length; k++){
+                        if (dataTaskBox.children.length === 0) {
+
+                            //添加大的任务块
+                            var copyTaskList = taskList.cloneNode(true);
+                            dataTaskBox.appendChild(copyTaskList);
+
+                            //添加时间节点
+                            var copyTaskDate = taskDate.cloneNode(true);
+                            copyTaskDate.innerText = localData[i].files[j].taskList[k].taskData;
+                            copyTaskList.appendChild(copyTaskDate);
+
+                            //添加任务list
+                            var copyTaskFilesBox = taskFilesBox.cloneNode(true);
+                            copyTaskList.appendChild(copyTaskFilesBox);
+
+                            //添加单任务
+                            var copyTaskFiles = taskFiles.cloneNode(true);
+                            copyTaskFiles.innerText = localData[i].files[j].taskList[k].taskName;
+                            copyTaskFilesBox.appendChild(copyTaskFiles);
+                            //判断任务是否完成
+                            if (localData[i].files[j].taskList[k].complete === true) {
+                                copyTaskFiles.className = 'taskCpmplete';
+                            }else{
+                            if (dataTaskBox.getElementsByClassName('taskDate')[l].innerText === 
+                                    localData[i].files[j].taskList[k].taskData) {
+                                    console.log(dataTaskBox.getElementsByClassName('taskDate')[l].innerText);
+                                    console.log(localData[i].files[j].taskList[k].taskData);
+                                    dataTaskBox.getElementsByClassName('taskDate')[l].
+                                            parentNode.appendChild(copyTaskDate);
+                                }else{
+                                    //添加大的任务块
+                                    var copyTaskList = taskList.cloneNode(true);
+                                    dataTaskBox.appendChild(copyTaskList);
+                                    //添加时间节点
+                                    var copyTaskDate = taskDate.cloneNode(true);
+                                    copyTaskDate.innerText = localData[i].files[j].taskList[k].taskData;
+                                    copyTaskList.appendChild(copyTaskDate);
+
+                                    //添加任务list
+                                    var copyTaskFilesBox = taskFilesBox.cloneNode(true);
+                                    copyTaskList.appendChild(copyTaskFilesBox);
+
+                                    //添加单任务
+                                    var copyTaskFiles = taskFiles.cloneNode(true);
+                                    copyTaskFiles.innerText = localData[i].files[j].taskList[k].taskName;
+                                    copyTaskFilesBox.appendChild(copyTaskFiles);
+                                    //判断任务是否完成
+                                    if (localData[i].files[j].taskList[k].complete === true) {
+                                        copyTaskFiles.className = 'taskCpmplete';
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -370,4 +414,44 @@
             addTask(taskData);
         }
     }, false);
+
+    //选中任务
+    var taskCheched = null;
+    dataTaskBox.addEventListener('click',function(event){
+        var e = window.event || event;
+        if (e.target.nodeName === 'LI') {
+            if (taskCheched !== null) {
+                taskCheched.style.backgroundColor = null;
+            }
+            e.target.style.backgroundColor = 'rgb(242,242,242)';
+            taskCheched = e.target;
+        }
+    },false)
+
+    var btnBox = document.getElementById('btnBox');
+
+    //改变complete
+    function changeComplete(taskName, bool){
+        var taskData = JSON.parse(localStorage.getItem('localData'));
+        for (var i =  0; i < taskData.length; i++) {
+                for (var j=0; j<taskData[i].files.length; j++){
+                    for (var k=0; k<taskData[i].files[j].taskList.length; k++){
+                        if (taskData[i].files[j].taskList[k].taskName === taskName) {
+                            taskData[i].files[j].taskList[k].complete = bool;
+                            localStorage.setItem('localData',JSON.stringify(taskData));
+                            return 0;
+                        }
+                    }
+                }
+            }
+        }
+
+    //添加完成的标记
+    btnBox.addEventListener('click',function(event){
+        var e = window.event || event;
+        if (e.target === this.children[0]) {
+            taskCheched.className = 'taskCpmplete';
+            changeComplete(taskCheched.innerText, true);
+        };
+    },false)
 })();
