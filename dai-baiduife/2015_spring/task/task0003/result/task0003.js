@@ -270,7 +270,126 @@
 
     //按下中间的addbtn按钮，添加task，修改rightBar界面
     addBtn[1].addEventListener('click', function () {
+        editModel();
+    }, false);
 
+    var taskFiles = DOC.createElement('li'),
+        taskFilesBox = DOC.createElement('ul'),
+        taskDate = DOC.createElement('div'),
+        taskList = DOC.createElement('div'),
+        dataTaskBox = DOC.getElementById('dataTaskBox');
+    taskList.className = 'dataTask';
+    taskDate.className = 'taskDate';
+
+    //设置task数据
+    function setTaskData() {
+        var localData = JSON.parse(localStorage.getItem('localData'));
+        var taskData = {
+            taskName: inputTaskName.value,
+            taskDate: inputDate.value,
+            taskContent: rightContentWrite.value,
+            complete: false
+        };
+        for (var i = 0; i < localData.length; i++) {
+            for (var j = 0; j < localData[i].files.length; j++) {
+                if (localData[i].files[j].fileName === folderListChecked.children[0].innerText) {
+                    localData[i].files[j].taskList.push(taskData);
+                    return localData;
+                }
+            }
+        }
+    }
+
+    //创建middleTask
+    function createTasks(names, dates) {
+        //创建大的taskBox
+        var copyTaskList = taskList.cloneNode(true);
+        dataTaskBox.appendChild(copyTaskList);
+
+        //创建task时间
+        var copyTaskDate = taskDate.cloneNode(true);
+        copyTaskDate.innerText = dates;
+        copyTaskList.appendChild(copyTaskDate);
+
+        //创建taskListBox
+        var copyTaskFilesBox = taskFilesBox.cloneNode(true);
+        copyTaskList.appendChild(copyTaskFilesBox);
+
+        //创建单个task
+        var copyTaskFiles = taskFiles.cloneNode(true);
+        copyTaskFiles.innerText = names;
+        copyTaskFilesBox.appendChild(copyTaskFiles);
+        if (setTaskComplete(copyTaskFiles)) {
+            copyTaskFiles.className = 'taskCpmplete';
+        }
+    }
+
+    //性能爆炸点，修改flag
+    //添加task在middleBar
+    function addTask() {
+        var localData = JSON.parse(localStorage.getItem('localData'));
+        if (localData !== null) {
+
+            //删除上次列表
+            for (var l = dataTaskBox.children.length; l > 0; l--) {
+                dataTaskBox.removeChild(dataTaskBox.children[0]);
+            }
+            console.log(localData);
+            for (var i = 0; i < localData.length; i++) {
+                for (var j = 0; j < localData[i].files.length; j++) {
+                    for (var k = 0; k < localData[i].files[j].taskList.length; k++) {
+
+                        //遍历 dataTaskBox 下的 taskDate 数组 ,检测是否有相同的
+                        var dataTaskBoxDate = dataTaskBox.getElementsByClassName('taskDate');
+                        if (dataTaskBoxDate.length > 0) {
+                            for (var l = 0; l < dataTaskBoxDate.length; l++) {
+                                if (localData[i].files[j].taskList[k].taskDate === dataTaskBoxDate[l].innerText) {
+
+                                    //创建单个task
+                                    var copyTaskFiles = taskFiles.cloneNode(true);
+                                    copyTaskFiles.innerText = localData[i].files[j].taskList[k].taskName;
+                                    dataTaskBoxDate[l].parentNode.children[1].appendChild(copyTaskFiles);
+                                    if (setTaskComplete(copyTaskFiles)) {
+                                        copyTaskFiles.className = 'taskCpmplete';
+                                    }
+                                } else {
+                                    createTasks(localData[i].files[j].taskList[k].taskName, localData[i].files[j].taskList[k].taskDate);
+                                }
+                                break;
+                            }
+                        } else {
+                            createTasks(localData[i].files[j].taskList[k].taskName, localData[i].files[j].taskList[k].taskDate);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //加载时添加middle taskList
+    addTask();
+
+    //处理task文件
+    saveBtn.addEventListener('click', function (event) {
+        var e = window.event || event;
+        if (folderListChecked) {
+            //按下save按钮
+            if (e.target === this.children[1]) {
+                console.log('ok');
+                var taskData = setTaskData();
+                console.log(JSON.stringify(taskData));
+                readOnlyModel();
+                localStorage.setItem('localData', JSON.stringify(taskData));
+                addTask();
+            }
+        } else {
+            alert('先选一个task文件目录文件');
+        }
+    }, false);
+
+    //进入编辑模式
+    function editModel(name, date, content) {
+        console.log(arguments);
         //修改task标题
         rightTitleName.style.display = 'none';
         inputTaskName.style.display = 'block';
@@ -285,173 +404,124 @@
 
         //编辑状态下完成按钮消失
         btnBox.style.display = 'none';
-    }, false);
 
-    var taskFiles = DOC.createElement('li'),
-        taskFilesBox = DOC.createElement('ul'),
-        taskDate = DOC.createElement('div'),
-        taskList = DOC.createElement('div'),
-        dataTaskBox = DOC.getElementById('dataTaskBox');
-    taskList.className = 'dataTask';
-    taskDate.className = 'taskDate';
-
-    //得到要保存的task数据
-    function getTaskData() {
-        var data = JSON.parse(localStorage.getItem('localData'));
-        var taskData = {
-            taskName: inputTaskName.value,
-            taskData: inputDate.value,
-            taskContent: rightContentWrite.value,
-            complete: false
-        };
-        for (var i = 0; i < data.length; i++) {
-            for (var j = 0; j < data[i].files.length; j++) {
-                if (data[i].files[j].fileName === folderListChecked.children[0].innerText) {
-                    data[i].files[j].taskList.push(taskData);
-                    return data;
-                }
-            }
+        if (name) {
+            inputTaskName.value = name;
+        } else {
+            inputTaskName.value = null;
+        }
+        if (date) {
+            inputDate.value = date;
+        } else {
+            inputDate.value = null;
+        }
+        if (content) {
+            rightContentWrite.value = content;
+        } else {
+            rightContentWrite.value = null;
         }
     }
 
-    //性能爆炸点，修改flag
-    //添加task在middleBar
-    function addTask(localData) {
-        if (localData !== null) {
+    //进入只读模式
+    function readOnlyModel(name, date, content) {
 
-            //删除上次列表
-            for (var l = dataTaskBox.children.length; l > 0; l--) {
-                dataTaskBox.removeChild(dataTaskBox.children[0]);
-            }
-            for (var i = 0; i < localData.length; i++) {
-                for (var j = 0; j < localData[i].files.length; j++) {
-                    for (var k = 0; k < localData[i].files[j].taskList.length; k++){
-                        if (dataTaskBox.children.length === 0) {
+        //修改task标题
+        rightTitleName.style.display = 'block';
+        inputTaskName.style.display = 'none';
 
-                            //添加大的任务块
-                            var copyTaskList = taskList.cloneNode(true);
-                            dataTaskBox.appendChild(copyTaskList);
+        //修改task Date
+        rightDateSpan.style.display = 'inline-block';
+        inputDate.style.display = 'none';
 
-                            //添加时间节点
-                            var copyTaskDate = taskDate.cloneNode(true);
-                            copyTaskDate.innerText = localData[i].files[j].taskList[k].taskData;
-                            copyTaskList.appendChild(copyTaskDate);
+        //修改taskContent
+        rightContentRead.style.display = 'block';
+        rightContentWrite.style.display = 'none';
 
-                            //添加任务list
-                            var copyTaskFilesBox = taskFilesBox.cloneNode(true);
-                            copyTaskList.appendChild(copyTaskFilesBox);
+        //未编辑状态下完成按钮出现
+        btnBox.style.display = 'block';
 
-                            //添加单任务
-                            var copyTaskFiles = taskFiles.cloneNode(true);
-                            copyTaskFiles.innerText = localData[i].files[j].taskList[k].taskName;
-                            copyTaskFilesBox.appendChild(copyTaskFiles);
-                            //判断任务是否完成
-                            if (localData[i].files[j].taskList[k].complete === true) {
-                                copyTaskFiles.className = 'taskCpmplete';
-                            }else{
-                            if (dataTaskBox.getElementsByClassName('taskDate')[l].innerText === 
-                                    localData[i].files[j].taskList[k].taskData) {
-                                    console.log(dataTaskBox.getElementsByClassName('taskDate')[l].innerText);
-                                    console.log(localData[i].files[j].taskList[k].taskData);
-                                    dataTaskBox.getElementsByClassName('taskDate')[l].
-                                            parentNode.appendChild(copyTaskDate);
-                                }else{
-                                    //添加大的任务块
-                                    var copyTaskList = taskList.cloneNode(true);
-                                    dataTaskBox.appendChild(copyTaskList);
-                                    //添加时间节点
-                                    var copyTaskDate = taskDate.cloneNode(true);
-                                    copyTaskDate.innerText = localData[i].files[j].taskList[k].taskData;
-                                    copyTaskList.appendChild(copyTaskDate);
-
-                                    //添加任务list
-                                    var copyTaskFilesBox = taskFilesBox.cloneNode(true);
-                                    copyTaskList.appendChild(copyTaskFilesBox);
-
-                                    //添加单任务
-                                    var copyTaskFiles = taskFiles.cloneNode(true);
-                                    copyTaskFiles.innerText = localData[i].files[j].taskList[k].taskName;
-                                    copyTaskFilesBox.appendChild(copyTaskFiles);
-                                    //判断任务是否完成
-                                    if (localData[i].files[j].taskList[k].complete === true) {
-                                        copyTaskFiles.className = 'taskCpmplete';
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        if (name) {
+            rightTitleName.innerText = name;
+        } else {
+            rightTitleName.innerText = null;
+        }
+        if (date) {
+            rightDateSpan.innerText = date;
+        } else {
+            rightDateSpan.innerText = null;
+        }
+        if (content) {
+            rightContentRead.innerText = content;
+        } else {
+            rightContentRead.innerText = null;
         }
     }
 
-    //加载时添加middle taskList
-    addTask(JSON.parse(localStorage.getItem('localData')));
-
-    //处理task文件
-    saveBtn.addEventListener('click', function (event) {
-        var e = window.event || event;
-        var taskData = getTaskData();
-
-        //按下save按钮
-        if (e.target === this.children[1]) {
-            //修改task标题
-            rightTitleName.style.display = 'block';
-            inputTaskName.style.display = 'none';
-
-            //修改task Date
-            rightDateSpan.style.display = 'inline-block';
-            inputDate.style.display = 'none';
-
-            //修改taskContent
-            rightContentRead.style.display = 'block';
-            rightContentWrite.style.display = 'none';
-
-            //未编辑状态下完成按钮出现
-            btnBox.style.display = 'block';
-
-            localStorage.setItem('localData', JSON.stringify(taskData));
-            addTask(taskData);
-        }
-    }, false);
-
-    //选中任务
-    var taskCheched = null;
-    dataTaskBox.addEventListener('click',function(event){
+    //选中task文件
+    var taskFlag = null;
+    dataTaskBox.addEventListener('click', function (event) {
         var e = window.event || event;
         if (e.target.nodeName === 'LI') {
-            if (taskCheched !== null) {
-                taskCheched.style.backgroundColor = null;
+            if (taskFlag !== null) {
+                taskFlag.style.backgroundColor = null;
             }
             e.target.style.backgroundColor = 'rgb(242,242,242)';
-            taskCheched = e.target;
+            taskFlag = e.target;
+            var taskDatas = getTaskData(taskFlag.innerText);
+            readOnlyModel(taskDatas.taskName, taskDatas.taskDate, taskDatas.taskContent);
         }
-    },false)
+    }, false);
 
-    var btnBox = document.getElementById('btnBox');
-
-    //改变complete
-    function changeComplete(taskName, bool){
+    //修改或得到complete标志
+    function setTaskComplete(node, bool) {
         var taskData = JSON.parse(localStorage.getItem('localData'));
-        for (var i =  0; i < taskData.length; i++) {
-                for (var j=0; j<taskData[i].files.length; j++){
-                    for (var k=0; k<taskData[i].files[j].taskList.length; k++){
-                        if (taskData[i].files[j].taskList[k].taskName === taskName) {
+
+        //更改完成标记
+        for (var i = 0; i < taskData.length; i++) {
+            for (var j = 0; j < taskData[i].files.length; j++) {
+                for (var k = 0; k < taskData[i].files[j].taskList.length; k++) {
+                    if (taskData[i].files[j].taskList[k].taskName === node.innerText) {
+                        if (bool) {
                             taskData[i].files[j].taskList[k].complete = bool;
-                            localStorage.setItem('localData',JSON.stringify(taskData));
-                            return 0;
+                            localStorage.setItem('localData', JSON.stringify(taskData));
                         }
+                        return taskData[i].files[j].taskList[k].complete;
+                    };
+                }
+            }
+        }
+    }
+
+    function getTaskData(name) {
+        var localData = JSON.parse(localStorage.getItem('localData'));
+        for (var i = 0; i < localData.length; i++) {
+            for (var j = 0; j < localData[i].files.length; j++) {
+                for (var k = 0; k < localData[i].files[j].taskList.length; k++) {
+                    if (localData[i].files[j].taskList[k].taskName === name) {
+                        return localData[i].files[j].taskList[k];
                     }
                 }
             }
         }
-
-    //添加完成的标记
-    btnBox.addEventListener('click',function(event){
+    }
+    //添加完成标志
+    btnBox.addEventListener('click', function (event) {
         var e = window.event || event;
-        if (e.target === this.children[0]) {
-            taskCheched.className = 'taskCpmplete';
-            changeComplete(taskCheched.innerText, true);
-        };
-    },false)
+        if (taskFlag !== null) {
+
+            //按下完成按钮
+            if (e.target === this.children[0]) {
+                taskFlag.className = 'taskCpmplete';
+                setTaskComplete(taskFlag, true);
+
+                //按下编辑按钮
+            } else if (e.target === this.children[1]) {
+                    var taskDatas = getTaskData(taskFlag.innerText);
+                    console.log(taskDatas);
+                    editModel(taskDatas.taskName, taskDatas.taskData, taskDatas.taskContent);
+                }
+        } else {
+            alert('先选一个task');
+        }
+    }, false);
 })();

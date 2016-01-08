@@ -9,7 +9,8 @@
   padding: 0;
   cursor: default; }
 
-html, body {
+html,
+body {
   font-size: 10px;
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -110,7 +111,7 @@ header {
         text-decoration: none; }
     .main .middle #dataTaskBox .dataTask {
       font-size: 1.5rem; }
-      .main .middle #dataTaskBox .dataTask div {
+      .main .middle #dataTaskBox .dataTask .taskDate {
         background-color: #FAFAEE;
         line-height: 3rem;
         text-indent: 2rem; }
@@ -198,7 +199,8 @@ header {
   background-image: url("../img/taskcomplete.png");
   background-size: 1.8rem 1.8rem;
   background-repeat: no-repeat;
-  background-position: 1.4rem 0.3rem; }
+  background-position: 1.4rem 0.3rem;
+  color: #499D24; }
 
 #mask {
   width: 100%;

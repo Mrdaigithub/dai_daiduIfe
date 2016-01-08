@@ -40,6 +40,10 @@ gulp.task('babel', function () {
         }))
         .pipe(gulp.dest('result'));
 });
+//监控es6
+gulp.task('watchjs', function () {
+    gulp.watch('source/*.js', ['babel']);
+});
 // 静态服务器
 gulp.task('watchSass',  ['sass'], function() {
     browserSync.init({

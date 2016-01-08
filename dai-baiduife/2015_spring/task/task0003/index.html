@@ -1,89 +1,92 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
-    <link rel="stylesheet" href="source/task0003.css">
+    <link rel="stylesheet" href="result/task0003.css">
 </head>
+
 <body>
-<header>
-    <h1>GTD TOOLS</h1>
-</header>
-<div class="main">
-    <div class="left">
-        <h2>所有任务 (<span>0</span>)</h2>
-        <div id="taskBox">
-            <h2>分类列表</h2>
-            <div class="tasklist">
-                <h4>
+    <header>
+        <h1>GTD TOOLS</h1>
+    </header>
+    <div class="main">
+        <div class="left">
+            <h2>所有任务 (<span>0</span>)</h2>
+            <div id="taskBox">
+                <h2>分类列表</h2>
+                <div class="tasklist">
+                    <h4>
                     <span class="tasklistTitleName">默认分类</span>
                     <span class="tasklistTitleNum">(0)</span>
                     <span class="closeBtn">X</span>
                 </h4>
-                <ul style="display: block">
-                    <li>
-                        <span class="tasklistChildName">README</span>
-                        <span class="tasklistChildNum">(0)</span>
-                        <span class="closeBtn">X</span>
-                    </li>
-                </ul>
+                    <ul style="display: block">
+                        <li>
+                            <span class="tasklistChildName">README</span>
+                            <span class="tasklistChildNum">(0)</span>
+                            <span class="closeBtn">X</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <button class="addBtn"><span>+</span> 新增分类</button>
+        </div>
+        <div class="middle">
+            <div class="title">
+                <a href="javascript:;" id="allTask" style="background-color: #fff">所有</a>
+                <a href="javascript:;" id="uncomTask">未完成</a>
+                <a href="javascript:;" id="comTask">已完成</a>
+            </div>
+            <div id="dataTaskBox">
+                <div class="dataTask">
+                    <div class="taskDate">2016-01-03</div>
+                    <ul>
+                        <li>README</li>
+                    </ul>
+                </div>
+            </div>
+            <button class="addBtn"><span>+</span> 新增分类</button>
+        </div>
+        <div class="right">
+            <div class="rightTitle">
+                <span id="rightTitleName" style="display: block;" class="fl">README</span>
+                <input type="text" placeholder="写个任务名称吧" style="display: none;" id="inputTaskName" class="fl">
+                <div id="btnBox" style="display: block;">
+                    <a href="javascript:;" class="completeBtn"></a>
+                    <a href="javascript:;" class="editBtn"></a>
+                </div>
+            </div>
+            <div class="rightDate">
+                任务日期：<span id="rightDateSpan" style="display: inline-block">2016-01-03</span>
+                <input id="inputDate" type="date" placeholder="格式：201x-xx-xx" style="display: none">
+            </div>
+            <div class="rightContent">
+                <p id="rightContentRead">俗套的xx管理系统...</p>
+                <textarea style="display: none" id="rightContentWrite" placeholder="在这里写点什么...">俗套的xx管理系统... 随便怎么玩吧~</textarea>
+                <div id="saveBtn">
+                    <button class="giveUp">放弃修改</button>
+                    <button class="save">保存</button>
+                </div>
             </div>
         </div>
-        <button class="addBtn"><span>+</span> 新增分类</button>
     </div>
-    <div class="middle">
-        <div class="title">
-            <a href="javascript:;" id="allTask" style="background-color: #fff">所有</a>
-            <a href="javascript:;" id="uncomTask">未完成</a>
-            <a href="javascript:;" id="comTask">已完成</a>
-        </div>
-        <div id="dataTaskBox">
-            <div class="dataTask">
-                <div class="taskDate">2016-01-03</div>
-                <ul><li>README</li></ul>
-            </div>
-        </div>
-        <button class="addBtn"><span>+</span> 新增分类</button>
-    </div>
-    <div class="right">
-        <div class="rightTitle">
-            <span id="rightTitleName" style="display: block;" class="fl">README</span>
-            <input type="text" placeholder="写个任务名称吧" style="display: none;" id="inputTaskName" class="fl">
-            <div id="btnBox" style="display: block;">
-                <a href="javascript:;" class="completeBtn"></a>
-                <a href="javascript:;" class="editBtn"></a>
-            </div>
-        </div>
-        <div class="rightDate">
-            任务日期：<span id="rightDateSpan" style="display: inline-block">2016-01-03</span>
-            <input id="inputDate" type="date" placeholder="格式：201x-xx-xx" style="display: none">
-        </div>
-        <div class="rightContent">
-            <p id="rightContentRead">俗套的xx管理系统...</p>
-            <textarea style="display: none" id="rightContentWrite" placeholder="在这里写点什么...">俗套的xx管理系统...   随便怎么玩吧~</textarea>
-            <div id="saveBtn">
-                <button class="giveUp">放弃修改</button>
-                <button class="save">保存</button>
-            </div>
+    <div id="mask">
+        <div id="createTask">
+            <h2>Please enter a task name:</h2>
+            <input type="text" id="taskName">
+            <br>
+            <span label="task">父分类 </span>
+            <input type="radio" name="task" checked="checked" value="parent"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span>子分类 </span>
+            <input type="radio" name="task" value="son">
+            <br>
+            <button id="okBtn">OK</button>
+            <button id="noBtn">close</button>
         </div>
     </div>
-</div>
-<div id="mask">
-    <div id="createTask">
-        <h2>Please enter a task name:</h2>
-        <input type="text" id="taskName">
-        <br>
-        <span label="task">父分类 </span>
-        <input type="radio" name="task" checked="checked" value="parent">
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <span>子分类 </span>
-        <input type="radio" name="task" value="son">
-        <br>
-        <button id="okBtn">OK</button>
-        <button id="noBtn">close</button>
-    </div>
-</div>
-<script src="result/task0003.js"></script>
+    <script src="result/task0003.js"></script>
 </body>
+
 </html>

@@ -1,307 +1,314 @@
-.fl{
-  float: left;
-}
-.fr{
-  float: right;
-}
-*{
-  margin: 0;
-  padding:0;
-  cursor: default;
-}
-html,body{
-  font-size: 10px;
-  -moz-user-select:none;
-  -webkit-user-select:none;
-  -ms-user-select:none;
-  user-select:none;
-}
-header{
-  background-color: #ddd;
-  h1{
-    color: #a0a0a0;
-    font-size: 3rem;
-    line-height: 5rem;
-    text-indent: 1.5rem;
-  }
-}
-.main{
-  display: -webkit-flex;
-  .addBtn{
-    padding-left: 1rem;
-    text-align: start;
-    cursor: pointer;
-    width: 20rem;
-    line-height: 3rem;
-    position: fixed;
-    bottom: 0;
-    background: #eee;
-    border:none;
-    border-top:1px solid #dedede;
-    outline: none;
-    span{
-      text-align: center;
-      vertical-align: middle;
-      font-size: 3rem;
-      font-weight: 800  ;
-      -webkit-transition: 1s;
-      -moz-transition: 1s;
-      -ms-transition: 1s;
-      -o-transition: 1s;
-      transition: 1s;
-    }
-    &:hover{
-      span{
-        transform: rotate(180deg);
-      }
-    }
-  }
-  .left{
-    width: 20rem;
-    height:100%;
-    background-color: #f2f2f2;
-    position: relative;
-    border-right: 1px solid #e3e3e3;
-    overflow-y: auto;
-    h2{
-      font-size: 1.8rem;
-      font-weight: 500;
-      line-height: 3rem;
-      padding-left: 0.5rem;
-    }
-    #taskBox{
-      .tasklist{
-        padding-left: 0.5rem;
-        .closeBtn{
-          float: right;
-          margin-right: 1rem;
-          cursor: pointer;
-          display: none;
-        }
-        h4{
-          font-size: 1.4rem;
-          font-weight: 500;
-          line-height: 3rem;
-          background: url("../img/folder.jpg") 0 5px no-repeat;
-          background-size: 25px;
-          padding-left: 3rem;
-          &:hover{
-            .closeBtn{
-              display: block;
-            }
-          }
-        }
-        ul{
-          list-style: none;
-          li{
-            cursor: pointer;
-            line-height: 3rem;
-            font-size: 1.3rem;
-            background: url("../img/file.png") 20px 7px no-repeat;
-            background-size: 25px;
-            padding-left: 4.3rem;
-            &:hover{
-              .closeBtn{
-                display: block;
-              }
-            }
-            span{
-              cursor: pointer;
-            }
-          }
-        }
-      }
-    }
-  }
-  .middle{
-    -webkit-flex: 1;
-    border-right: 1px solid #dedede;
-    .title{
-      line-height: 3rem;
-      border-top: 1px solid #dedede;
-      border-bottom: 1px solid #dedede;
-      background-color: #eee;
-      text-align: center;
-      a{
-        cursor: pointer;
-        border:1px solid #eee;
-        border-radius: 1rem;
-        padding: 0.4rem 1rem;
-        margin: 0 3%;
-        color: #000;
-        text-decoration: none;
-      }
-    }
-    #dataTaskBox{
-      .dataTask{
-        font-size: 1.5rem;
-        .taskDate{
-          background-color: #FAFAEE;
-          line-height: 3rem;
-          text-indent: 2rem;
-        }
-        ul{
-          line-height: 2.5rem;
-          text-indent: 3.5rem;
-          li{
-            font-weight: 300;
-            font-size: 1.4rem;
-            cursor: pointer;
-          }
-        }
-      }
-    }
-  }
-  .right{
-    -webkit-flex: 2.5;
-    font-size: 1.5rem;
-    position: relative;
-    .rightTitle{
-      background-color: #eee;
-      font-size: 2rem;
-      font-weight: 600;
-      line-height: 3.5rem;
-      height:3.5rem;
-      padding:1rem 0 1rem 1rem;
-      text-indent: 2rem;
-      input{
-        cursor: text;
-        width: 30%;
-        height: 2.5rem;
-        font-size: 1.6rem;
-        text-indent: 0.5rem;
-      }
-      #btnBox{
-        float: right;
-        a{
-          width: 30px;
-          height:30px;
-          display: inline-block;
-          vertical-align: middle;
-          background-size: 30px 30px;
-          margin-right: 2rem;
-          cursor: pointer;
-        }
-        .completeBtn{
-          background-image: url("../img/complete.png");
-        }
-        .editBtn{
-          background-image: url("../img/edit.png");
-        }
-      }
-    }
-    .rightDate{
-      background-color: #FAFAEE;
-      line-height: 4rem;
-      text-indent: 2rem;
-      input{
-        width: 20%;
-        height: 2rem;
-        line-height: 2rem;
-        text-indent: 0.5rem;
-        cursor: text;
-      }
-    }
-    .rightContent{
-      #rightContentRead{
-        padding:1rem 1rem 0 1rem;
-      }
-      #rightContentWrite{
-        cursor: text;
-        width: 95%;
-        height: 30rem;
-        border:none;
-        resize: none;
-        outline: none;
-        -moz-user-select:text;
-        -webkit-user-select:text;
-        -ms-user-select:text;
-        user-select:text;
-        padding:1rem 1rem 0 1rem;
-      }
-      #saveBtn{
-        position: absolute;
-        bottom:5%;
-        right:5%;
-        button{
-          padding: 0 1rem;
-          line-height: 3rem;
-          color: #fff;
-          border-radius: 5rem;
-          text-align: center;
-          float: right;
-          outline:none;
-        }
-        .save{
-          background: #0088FF;
-        }
-        .giveUp{
-          background: #DD4E42;
-        }
-      }
-    }
-  }
+.fl {
+    float: left;
 }
 
-.taskCpmplete{
-  background-image: url("../img/taskcomplete.png");
-  background-size: 1.8rem 1.8rem;
-  background-repeat: no-repeat;
-  background-position: 1.4rem 0.3rem;
-  color: #499D24;
+.fr {
+    float: right;
 }
-#mask{
-  width: 100%;
-  background-color: rgba(0,0,0,0.8);
-  position: fixed;
-  top:0;
-  bottom:0;
-  display: none;
-  #createTask{
-    margin: 10rem auto;
-    width: 50%;
-    height: 50%;
-    background-color: #fff;
-    border-radius: 1rem;
-    padding: 1rem;
-    text-align: center;
-    overflow: hidden;
-    position: relative;
-    h2{
-      font-size: 3rem;
+
+* {
+    margin: 0;
+    padding: 0;
+    cursor: default;
+}
+
+html,
+body {
+    font-size: 10px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+header {
+    background-color: #ddd;
+    h1 {
+        color: #a0a0a0;
+        font-size: 3rem;
+        line-height: 5rem;
+        text-indent: 1.5rem;
     }
-    input{
-      outline: none;
+}
+
+.main {
+    display: -webkit-flex;
+    .addBtn {
+        padding-left: 1rem;
+        text-align: start;
+        cursor: pointer;
+        width: 20rem;
+        line-height: 3rem;
+        position: fixed;
+        bottom: 0;
+        background: #eee;
+        border: none;
+        border-top: 1px solid #dedede;
+        outline: none;
+        span {
+            text-align: center;
+            vertical-align: middle;
+            font-size: 3rem;
+            font-weight: 800;
+            -webkit-transition: 1s;
+            -moz-transition: 1s;
+            -ms-transition: 1s;
+            -o-transition: 1s;
+            transition: 1s;
+        }
+        &:hover {
+            span {
+                transform: rotate(180deg);
+            }
+        }
     }
-    #taskName{
-      cursor: text;
-      border-radius: 0.5rem;
-      margin-top: 2rem;
-      margin-bottom: 2rem;
-      width: 30%;
-      height: 2rem;
-      font-size: 1.6rem;
-      padding-left: 0.5rem;
+    .left {
+        width: 20rem;
+        height: 100%;
+        background-color: #f2f2f2;
+        position: relative;
+        border-right: 1px solid #e3e3e3;
+        overflow-y: auto;
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            line-height: 3rem;
+            padding-left: 0.5rem;
+        }
+        #taskBox {
+            .tasklist {
+                padding-left: 0.5rem;
+                .closeBtn {
+                    float: right;
+                    margin-right: 1rem;
+                    cursor: pointer;
+                    display: none;
+                }
+                h4 {
+                    font-size: 1.4rem;
+                    font-weight: 500;
+                    line-height: 3rem;
+                    background: url("../img/folder.jpg") 0 5px no-repeat;
+                    background-size: 25px;
+                    padding-left: 3rem;
+                    &:hover {
+                        .closeBtn {
+                            display: block;
+                        }
+                    }
+                }
+                ul {
+                    list-style: none;
+                    li {
+                        cursor: pointer;
+                        line-height: 3rem;
+                        font-size: 1.3rem;
+                        background: url("../img/file.png") 20px 7px no-repeat;
+                        background-size: 25px;
+                        padding-left: 4.3rem;
+                        &:hover {
+                            .closeBtn {
+                                display: block;
+                            }
+                        }
+                        span {
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+        }
     }
-    span{
-      font-size: 1.5rem;
+    .middle {
+        -webkit-flex: 1;
+        border-right: 1px solid #dedede;
+        .title {
+            line-height: 3rem;
+            border-top: 1px solid #dedede;
+            border-bottom: 1px solid #dedede;
+            background-color: #eee;
+            text-align: center;
+            a {
+                cursor: pointer;
+                border: 1px solid #eee;
+                border-radius: 1rem;
+                padding: 0.4rem 1rem;
+                margin: 0 3%;
+                color: #000;
+                text-decoration: none;
+            }
+        }
+        #dataTaskBox {
+            .dataTask {
+                font-size: 1.5rem;
+                .taskDate {
+                    background-color: #FAFAEE;
+                    line-height: 3rem;
+                    text-indent: 2rem;
+                }
+                ul {
+                    line-height: 2.5rem;
+                    text-indent: 3.5rem;
+                    li {
+                        font-weight: 300;
+                        font-size: 1.4rem;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
     }
-    button{
-      position: absolute;
-      bottom: 8%;
-      width: 20%;
-      height:15%;
-      background-color: #eb4a4b;
-      border:none;
-      outline: none;
-      color: #fff;
-      font-size: 1.6rem;
+    .right {
+        -webkit-flex: 2.5;
+        font-size: 1.5rem;
+        position: relative;
+        .rightTitle {
+            background-color: #eee;
+            font-size: 2rem;
+            font-weight: 600;
+            line-height: 3.5rem;
+            height: 3.5rem;
+            padding: 1rem 0 1rem 1rem;
+            text-indent: 2rem;
+            input {
+                cursor: text;
+                width: 30%;
+                height: 2.5rem;
+                font-size: 1.6rem;
+                text-indent: 0.5rem;
+            }
+            #btnBox {
+                float: right;
+                a {
+                    width: 30px;
+                    height: 30px;
+                    display: inline-block;
+                    vertical-align: middle;
+                    background-size: 30px 30px;
+                    margin-right: 2rem;
+                    cursor: pointer;
+                }
+                .completeBtn {
+                    background-image: url("../img/complete.png");
+                }
+                .editBtn {
+                    background-image: url("../img/edit.png");
+                }
+            }
+        }
+        .rightDate {
+            background-color: #FAFAEE;
+            line-height: 4rem;
+            text-indent: 2rem;
+            input {
+                width: 20%;
+                height: 2rem;
+                line-height: 2rem;
+                text-indent: 0.5rem;
+                cursor: text;
+            }
+        }
+        .rightContent {
+            #rightContentRead {
+                padding: 1rem 1rem 0 1rem;
+            }
+            #rightContentWrite {
+                cursor: text;
+                width: 95%;
+                height: 30rem;
+                border: none;
+                resize: none;
+                outline: none;
+                -moz-user-select: text;
+                -webkit-user-select: text;
+                -ms-user-select: text;
+                user-select: text;
+                padding: 1rem 1rem 0 1rem;
+            }
+            #saveBtn {
+                position: absolute;
+                bottom: 5%;
+                right: 5%;
+                button {
+                    padding: 0 1rem;
+                    line-height: 3rem;
+                    color: #fff;
+                    border-radius: 5rem;
+                    text-align: center;
+                    float: right;
+                    outline: none;
+                }
+                .save {
+                    background: #0088FF;
+                }
+                .giveUp {
+                    background: #DD4E42;
+                }
+            }
+        }
     }
-    #okBtn{
-      left:10%;
+}
+
+.taskCpmplete {
+    background-image: url("../img/taskcomplete.png");
+    background-size: 1.8rem 1.8rem;
+    background-repeat: no-repeat;
+    background-position: 1.4rem 0.3rem;
+    color: #499D24;
+}
+
+#mask {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    display: none;
+    #createTask {
+        margin: 10rem auto;
+        width: 50%;
+        height: 50%;
+        background-color: #fff;
+        border-radius: 1rem;
+        padding: 1rem;
+        text-align: center;
+        overflow: hidden;
+        position: relative;
+        h2 {
+            font-size: 3rem;
+        }
+        input {
+            outline: none;
+        }
+        #taskName {
+            cursor: text;
+            border-radius: 0.5rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            width: 30%;
+            height: 2rem;
+            font-size: 1.6rem;
+            padding-left: 0.5rem;
+        }
+        span {
+            font-size: 1.5rem;
+        }
+        button {
+            position: absolute;
+            bottom: 8%;
+            width: 20%;
+            height: 15%;
+            background-color: #eb4a4b;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 1.6rem;
+        }
+        #okBtn {
+            left: 10%;
+        }
+        #noBtn {
+            right: 10%;
+        }
     }
-    #noBtn{
-      right:10%;
-    }
-  }
 }
