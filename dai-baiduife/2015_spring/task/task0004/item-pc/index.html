@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- 声明文档使用的字符编码 -->
+    <!-- 优先使用 IE 最新版本和 Chrome -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <!-- 页面描述 -->
+     <meta name="description" content="task0004"/>
+    <!-- 页面关键词 -->
+    <meta name="keywords" content="mrdai"/>
+    <!-- 网页作者 -->
+    <meta name="author" content="mrdai, 346139312@qq.com"/>
+    <!-- 搜索引擎抓取 -->
+    <meta name="robots" content="index,follow"/>
+    <meta name="format-detection" content="telphone=no, email=no"/>
+    <!-- 忽略页面中的数字识别为电话，忽略email识别 -->
+    <!-- 启用360浏览器的极速模式(webkit) -->
+    <meta name="renderer" content="webkit">
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" type="image/ico" href="img/icon.ico"/>
+    <!-- 添加 favicon icon -->
+    <link rel="stylesheet" href="result/reset.css"/>
+    <link rel="stylesheet" href="result/style.css"/>
+    <title>task0004-pc</title>
+</head>
+<body>
+<header>
+    <h1>GTD Tools</h1>
+</header>
+<div class="main">
+    <div id="left">
+        <h2>所有任务 <span></span></h2>
+        <h2>分类列表</h2>
+        <div class="filesBox">
+            <h3 id="checked">默认分类 <span class="rmFileBtn">X</span></h3>
+            <ul>
+                <li>README<span class="rmFileBtn">X</span></li>
+            </ul>
+        </div>
+        <div class="addFilesBtn"><span>+</span>新增分类</div>
+    </div>
+    <div id="middle">
+        <div class="label">
+            <a href="javascript:;" class="labelChecked">所有</a>
+            <a href="javascript:;">未完成</a>
+            <a href="javascript:;">已完成</a>
+        </div>
+        <div class="taskBox">
+            <div class="taskDate">2015-04-28</div>
+            <ul class="taskList">
+                <li>task1</li>
+            </ul>
+        </div>
+        <div class="addFilesBtn"><span>+</span>新增分类</div>
+    </div>
+    <div id="right">
+        <div class="readTask">
+            <div class="taskTitle">123</div>
+            <div class="taskDate">123</div>
+            <div class="taskContent">123</div>
+        </div>
+        <div class="writeTask" style="display: none;">
+            <input class="taskTitle" type="text" placeholder="写个名字.."/>
+            <input class="taskDate" type="date"/>
+            <textarea class="taskContent"></textarea>
+        </div>
+        <div class="editBtnBox">
+            <a href="javascript:;" class="editBtn">编辑</a>
+            <a href="javascript:;" class="giveUp">放弃修改</a>
+        </div>
+    </div>
+</div>
+<script src="result/util.js"></script>
+<script src="result/script.js"></script>
+</body>
+</html>

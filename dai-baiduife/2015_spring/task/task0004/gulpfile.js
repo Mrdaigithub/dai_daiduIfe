@@ -12,46 +12,47 @@ gulp.task('default', ['mincss','minjs'], function () {
 });
 
 gulp.task('mincss', function () {
-    gulp.src('item/result/*.css')
+    gulp.src('item-pc/result/*.css')
         .pipe(uglifycss({
             "max-line-len": 80
         }))
         .pipe(concat('all.min.css'))
-        .pipe(gulp.dest('item/result/min/'));
+        .pipe(gulp.dest('item-pc/result/min/'));
 });
 //压缩合并js代码
 gulp.task('minjs', function() {
-    return gulp.src('item/result/*.js')
+    return gulp.src('item-pc/result/*.js')
         .pipe(uglify())
         .pipe(concat('all.min.js'))
-        .pipe(gulp.dest('item/result/min/'));
+        .pipe(gulp.dest('item-pc/result/min/'));
 });
 //sass转css
 gulp.task('sass', function () {
-    return sass('item/src/*.scss')
+    return sass('item-pc/src/*.scss')
         .on('error', sass.logError)
-        .pipe(gulp.dest('item/result'))
+        .pipe(gulp.dest('item-pc/result'))
         .pipe(reload({stream: true}));
 });
 //es6转es5.1
 gulp.task('babel', function () {
-    return gulp.src('item/src/*.js')
+    return gulp.src('item-pc/src/*.js')
         .pipe(babel({
             presets: ['es2015']
         }))
-        .pipe(gulp.dest('item/result'));
+        .pipe(gulp.dest('item-pc/result'));
 });
 //监控es6
 gulp.task('watchjs', function () {
-    gulp.watch('item/src/*.js', ['babel']);
+    gulp.watch('item-pc/src/*.js', ['babel']);
 });
 // 静态服务器
 gulp.task('watchSass',  ['sass'], function() {
     browserSync.init({
         server: {
-            baseDir: "./item/result"
+            baseDir: "./item-pc"
         }
     });
-    gulp.watch("item/src/*.scss", ['sass']);
-    gulp.watch("item/result/*.*").on('change', reload);
+    gulp.watch("item-pc/src/*.scss", ['sass']);
+    gulp.watch("item-pc/index.html").on('change', reload);
+    gulp.watch("item-pc/result/*.*").on('change', reload);
 });
