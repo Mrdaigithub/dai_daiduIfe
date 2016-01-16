@@ -37,18 +37,23 @@
                 filesBox.className = 'filesBox';
                 $('#left').appendChild(filesBox);
                 let fileHtml = '';
-                if (localData[i].folderName === '默认分类'){
-                    fileHtml += '<h3 id="checked">'+localData[i].folderName+'<span class="rmFileBtn">X</span></h3><ul style="display: block;">';
-                }else {
-                    fileHtml += '<h3>'+localData[i].folderName+'<span class="rmFileBtn">X</span></h3><ul style="display: block;">';
-                }
+
+                //添加选中标记
+                fileHtml += '<h3>'+localData[i].folderName+'<span class="rmFileBtn">X</span></h3><ul style="display: block;">';
                 for (let j=0; j<localData[i].files.length; j++){
                     fileHtml += '<li>'+localData[i].files[j].fileName+'<span class="rmFileBtn">X</span></li>';
                 }
                 fileHtml += '</ul>';
                 filesBox.innerHTML = fileHtml;
+                $('.filesBox')[0].children[1].children[0].id = 'checked';
             }
         })();
+
+        //加载middle的task
+        loadTask();
+
+        //加载right
+        loadTaskContent();
     })();
 
     $('#left').addEventListener('click', function (event) {
@@ -68,12 +73,35 @@
         //leftBar添加选中的标记
         (function () {
             let flag = $('#checked');
-            if ((e.target.nodeName === 'H3') || (e.target.nodeName === 'LI')){
+            if ((e.target.nodeName === 'LI')){
                 flag.id = null;
                 e.target.id = 'checked';
             }
-        })();
-    },false)
 
+            //加载middle的task
+            loadTask();
+
+            //加载right
+            loadTaskContent();
+        })();
+    },false);
+
+    (function () {
+        let checked = $('.taskBox')[0].children[1].children[0];
+        $('#middle').addEventListener('click', function (event) {
+            let e = window.event || event;
+            //点击middle的完成分类按钮
+            if (e.target.nodeName === 'A'){
+                let labelChecked = $('.labelChecked')[0];
+                labelChecked.className = null;
+                e.target.className = 'labelChecked';
+            }else if (e.target.nodeName === 'LI'){
+                checked.style.backgroundColor = null;
+                e.target.style.backgroundColor = '#3F3E33';
+                checked = e.target;
+            }
+            loadTaskContent();
+        },false)
+    })();
 
 })();

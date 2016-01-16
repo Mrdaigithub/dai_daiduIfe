@@ -114,6 +114,11 @@ header{
         font-size: 0.7rem;
         text-indent: 2rem;
       }
+      .taskComplete{
+        background: url("../img/taskcomplete.png")no-repeat 0.5rem 0;
+        background-size: 1rem 1rem;
+        color: #1aa260;
+      }
     }
     .addFilesBtn{
       text-indent: 0.5rem;
@@ -138,7 +143,7 @@ header{
     flex: 2.5;
     border: 1px solid #999;
     position: relative;
-    .readTask{
+    #readTask{
       .taskTitle{
         font-size: 1.2rem;
         font-weight: 600;
@@ -165,7 +170,7 @@ header{
         font-size: 0.6rem;
       }
     }
-    .writeTask{
+    #writeTask{
       .taskTitle{
         width: 40%;
         display: block;
