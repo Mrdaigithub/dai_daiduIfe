@@ -174,3 +174,45 @@ header h1 {
         background-color: #19a15f; }
       .main #right .editBtnBox .giveUp {
         background-color: #dd5145; }
+
+#createMask {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8); }
+  #createMask .createBox {
+    position: relative;
+    left: 33%;
+    top: 30%;
+    width: 30%;
+    height: 25%;
+    background-color: #F5F5D5;
+    border-radius: 1rem;
+    text-align: center;
+    padding: 1rem; }
+    #createMask .createBox .inputName input {
+      margin-left: 0.4rem;
+      padding: 0.2rem 0.5rem; }
+    #createMask .createBox .sort {
+      margin-top: 2rem; }
+      #createMask .createBox .sort span {
+        margin-right: 0.5rem; }
+    #createMask .createBox #folder {
+      margin-right: 5rem; }
+    #createMask .createBox .createBtnBox {
+      margin-top: 1.5rem; }
+      #createMask .createBox .createBtnBox input {
+        margin: 0 3rem;
+        padding: 3% 5%;
+        outline: none;
+        border: none;
+        border-radius: 0.5rem;
+        color: #fff;
+        font-weight: 700;
+        cursor: pointer; }
+      #createMask .createBox .createBtnBox #createBtn {
+        background-color: #1aa260; }
+      #createMask .createBox .createBtnBox #cancelBtn {
+        background-color: #de5145; }

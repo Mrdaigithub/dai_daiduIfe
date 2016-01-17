@@ -1,5 +1,5 @@
-"use strict";
 (function () {
+    "use strict";
     const DOC = document;
 
     (function () {
@@ -29,25 +29,8 @@
             }
         },false);
 
-        //加载本地数据的file and folder
-        (function (){
-            let localData = JSON.parse(localStorage.getItem('localData'));
-            for(let i=0; i<localData.length; i++){
-                let filesBox = document.createElement('div');
-                filesBox.className = 'filesBox';
-                $('#left').appendChild(filesBox);
-                let fileHtml = '';
-
-                //添加选中标记
-                fileHtml += '<h3>'+localData[i].folderName+'<span class="rmFileBtn">X</span></h3><ul style="display: block;">';
-                for (let j=0; j<localData[i].files.length; j++){
-                    fileHtml += '<li>'+localData[i].files[j].fileName+'<span class="rmFileBtn">X</span></li>';
-                }
-                fileHtml += '</ul>';
-                filesBox.innerHTML = fileHtml;
-                $('.filesBox')[0].children[1].children[0].id = 'checked';
-            }
-        })();
+        //加载left的文件and文件夹
+        loadFile();
 
         //加载middle的task
         loadTask();
@@ -70,10 +53,15 @@
             this.removeChild(e.target.parentNode.parentNode);
         }
 
+        //添加分类
+        if(e.target.className === 'addFilesBtn'){
+            $('#createMask').style.display ='block';
+        }
+
         //leftBar添加选中的标记
         (function () {
             let flag = $('#checked');
-            if ((e.target.nodeName === 'LI')){
+            if ((e.target.nodeName === 'LI' || e.target.nodeName === 'H3')){
                 flag.id = null;
                 e.target.id = 'checked';
             }
@@ -86,10 +74,66 @@
         })();
     },false);
 
+
+    //创建文件或文件夹
+    $('#createMask').addEventListener('click', function (event) {
+        let e = window.event || event,
+            localData = JSON.parse(localStorage.getItem('localData'));
+
+        //关闭创建窗口
+        if(e.target === $('#cancelBtn')){
+            $('#createMask').style.display ='none';
+        }
+
+        //创建
+        if(e.target === $('#createBtn')){
+            let inputFileNameVal = $('#inputFileName').value;
+
+            //创建文件夹
+            if($('#folder').checked){
+
+                //修改本地存储数据
+                let dataTree = {
+                    folderName:inputFileNameVal,
+                    files:[]
+                };
+                localData.push(dataTree);
+                localStorage.setItem('localData',JSON.stringify(localData));
+
+                //重新加载left的文件and文件夹
+                loadFile();
+            }else{
+
+                //创建文件
+
+                //修改本地存储数据
+                let dataTree = {
+                    fileName:inputFileNameVal,
+                    taskList:[]
+                },
+                    folderName = prevNode($('#checked').parentNode).innerText.replace(/X$/,'');
+                for(let i=0; i<localData.length; i++){
+                    if(localData[i].folderName === folderName){
+                        console.log(inputFileNameVal);
+                        localData[i].files.push(dataTree);
+                        break;
+                    }
+                }
+                localStorage.setItem('localData',JSON.stringify(localData));
+
+                //重新加载left的文件and文件夹
+                loadFile();
+            }
+
+
+        }
+    },false);
+
     (function () {
         let checked = $('.taskBox')[0].children[1].children[0];
         $('#middle').addEventListener('click', function (event) {
             let e = window.event || event;
+
             //点击middle的完成分类按钮
             if (e.target.nodeName === 'A'){
                 let labelChecked = $('.labelChecked')[0];
@@ -99,6 +143,11 @@
                 checked.style.backgroundColor = null;
                 e.target.style.backgroundColor = '#3F3E33';
                 checked = e.target;
+            }
+
+            if(e.target === $('.addFilesBtn')[1]){
+                $('#readTask').style.display = 'none';
+                $('#writeTask').style.display = 'block';
             }
             loadTaskContent();
         },false)

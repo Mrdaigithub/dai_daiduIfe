@@ -19,9 +19,55 @@ function nextNode(element){
     return element.nextElementSibling;
 }
 
+//加载left的文件and文件夹
+function loadFile(){
+    (function () {
+        //清空分类列表
+        let filesBox = $('.filesBox');
+        if(filesBox.length > 0){
+            let Parent = $('#left');
+            for(let i=0; i<filesBox.length; i++){
+                Parent.removeChild(filesBox[i]);
+            }
+        }
+    })();
+
+    //创建
+    let localData = JSON.parse(localStorage.getItem('localData')),
+        checkedNode = $('#checked'),
+        left = $('#left'),
+        li = left.getElementsByTagName('li'),
+        flag  = 0;
+    if(checkedNode){
+        //找到原先的标记
+        for(let i=0; i<li.length; i++){
+            if(li[i] === checked){
+                flag = i;
+                break;
+            }
+        }
+    }
+
+    for(let i=0; i<localData.length; i++){
+        let filesBox = document.createElement('div'),
+            str = '';
+        filesBox.className = 'filesBox';
+        str += '<h3>' + localData[i].folderName +
+            '<span class="rmFileBtn">X</span>' +
+            '</h3>' + '<ul style="display: block;">';
+        for(let j=0; j<localData[i].files.length; j++){
+            str += '<li>' + localData[i].files[j].fileName +
+                    '<span class="rmFileBtn">X</span></li>';
+        }
+        str += '</ul>';
+        filesBox.innerHTML = str;
+        left.appendChild(filesBox);
+    }
+    left.getElementsByTagName('li')[flag].id = 'checked';
+}
 
 //加载middle的task
-function loadTask (){
+function loadTask(){
 
     let filesFlag = $('#checked');
     let localData = JSON.parse(localStorage.getItem('localData'));
@@ -134,7 +180,7 @@ function loadTask (){
     }
 }
 
-function loadTaskContent (){
+function loadTaskContent(){
     let localData = JSON.parse(localStorage.getItem('localData')),
         taskList = $('#middle').getElementsByTagName('li'),
         files = $('#checked'),
@@ -148,7 +194,6 @@ function loadTaskContent (){
     }
 
     if (files.nodeName === 'LI'){
-        console.log(task);
         for (let i=0; i<localData.length; i++){
             if (localData[i].folderName === prevNode(files.parentNode).innerText.replace(/X$/,'')){
                 for (let j=0; j<localData[i].files.length; j++){
@@ -157,8 +202,8 @@ function loadTaskContent (){
                             if (localData[i].files[j].taskList[k].taskName === task){
                                 let readTask = $('#readTask'),
                                     writeTask = $('#writeTask');
-                                writeTask.children[0].innerHTML = readTask.children[0].innerHTML = localData[i].files[j].taskList[k].taskName;
-                                writeTask.children[1].innerHTML = readTask.children[1].innerHTML = localData[i].files[j].taskList[k].taskData;
+                                writeTask.children[0].value = readTask.children[0].innerHTML = localData[i].files[j].taskList[k].taskName;
+                                writeTask.children[1].value = readTask.children[1].innerHTML = localData[i].files[j].taskList[k].taskData;
                                 writeTask.children[2].innerHTML = readTask.children[2].innerHTML = localData[i].files[j].taskList[k].taskContent;
                                 break;
                             }
