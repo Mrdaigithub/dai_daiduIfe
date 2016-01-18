@@ -25,7 +25,7 @@ header{
     }
     .filesBox{
       h3{
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         background: url("../img/folder.png") no-repeat 7px 3px;
         background-size: 1.2rem 1.2rem;
         line-height: 1.5rem;
@@ -44,7 +44,7 @@ header{
       }
       ul{
         li{
-          font-size: 0.7rem;
+          font-size: 0.5rem;
           line-height: 1.2rem;
           text-indent: 3rem;
           background: url("../img/file.png") no-repeat 1.5rem 0;
@@ -119,6 +119,9 @@ header{
         background-size: 1rem 1rem;
         color: #1aa260;
       }
+      #taskChecked{
+        background-color: #3F3E33;
+      }
     }
     .addFilesBtn{
       text-indent: 0.5rem;
@@ -169,6 +172,16 @@ header{
         color: #fff;
         font-size: 0.6rem;
       }
+      .completeBox{
+        position: absolute;
+        #completeBtn{
+          background: url("../img/edit.png")no-repeat 0 0;
+          background-size: 1rem;
+        }
+        #edit{
+
+        }
+      }
     }
     #writeTask{
       .taskTitle{
@@ -212,11 +225,30 @@ header{
         font-size: 0.8rem;
         margin-right: 1rem;
       }
-      .editBtn{
+      .completeBtn{
         background-color: #19a15f;
       }
       .giveUp{
         background-color: #dd5145;
+      }
+    }
+    .completeBox{
+      position: absolute;
+      right: 0.5rem;
+      top: 0.5rem;
+      a{
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-right: 0.5rem;
+        display: inline-block;
+      }
+      #completeBtn{
+        background: url("../img/complete.png")no-repeat 0 0;
+        background-size: 1.5rem;
+      }
+      #editBtn{
+        background: url("../img/edit.png")no-repeat 0 0;
+        background-size: 1.5rem;
       }
     }
   }

@@ -21,7 +21,7 @@ header h1 {
       line-height: 1.5rem;
       font-size: 0.8rem; }
     .main #left .filesBox h3 {
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       background: url("../img/folder.png") no-repeat 7px 3px;
       background-size: 1.2rem 1.2rem;
       line-height: 1.5rem;
@@ -34,7 +34,7 @@ header h1 {
       .main #left .filesBox h3:hover .rmFileBtn {
         display: block; }
     .main #left .filesBox ul li {
-      font-size: 0.7rem;
+      font-size: 0.5rem;
       line-height: 1.2rem;
       text-indent: 3rem;
       background: url("../img/file.png") no-repeat 1.5rem 0;
@@ -92,6 +92,8 @@ header h1 {
       background: url("../img/taskcomplete.png") no-repeat 0.5rem 0;
       background-size: 1rem 1rem;
       color: #1aa260; }
+    .main #middle .taskBox #taskChecked {
+      background-color: #3F3E33; }
     .main #middle .addFilesBtn {
       text-indent: 0.5rem;
       width: 13.2rem;
@@ -134,6 +136,11 @@ header h1 {
       background-color: #292a24;
       color: #fff;
       font-size: 0.6rem; }
+    .main #right #readTask .completeBox {
+      position: absolute; }
+      .main #right #readTask .completeBox #completeBtn {
+        background: url("../img/edit.png") no-repeat 0 0;
+        background-size: 1rem; }
     .main #right #writeTask .taskTitle {
       width: 40%;
       display: block;
@@ -170,10 +177,25 @@ header h1 {
         border-radius: 0.5rem;
         font-size: 0.8rem;
         margin-right: 1rem; }
-      .main #right .editBtnBox .editBtn {
+      .main #right .editBtnBox .completeBtn {
         background-color: #19a15f; }
       .main #right .editBtnBox .giveUp {
         background-color: #dd5145; }
+    .main #right .completeBox {
+      position: absolute;
+      right: 0.5rem;
+      top: 0.5rem; }
+      .main #right .completeBox a {
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-right: 0.5rem;
+        display: inline-block; }
+      .main #right .completeBox #completeBtn {
+        background: url("../img/complete.png") no-repeat 0 0;
+        background-size: 1.5rem; }
+      .main #right .completeBox #editBtn {
+        background: url("../img/edit.png") no-repeat 0 0;
+        background-size: 1.5rem; }
 
 #createMask {
   display: none;
