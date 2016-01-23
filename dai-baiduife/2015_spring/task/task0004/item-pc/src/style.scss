@@ -11,7 +11,7 @@ header{
   color: #fff;
   background-color: #292A24 !important;
 }
-.main{
+#main{
   display: flex;
   #left{
     position: relative;
@@ -63,6 +63,10 @@ header{
         }
       }
     }
+    #fileChecked{
+      background-color: #3F3E33;
+      color: #fff;
+    }
     .addFilesBtn{
       text-indent: 0.5rem;
       width: 10rem;
@@ -86,7 +90,7 @@ header{
     flex: 1;
     border: 1px solid #999;
     overflow: auto;
-    .label{
+    #label{
       font-size: 0.7rem;
       border-bottom: 1px solid #999;
       line-height: 2rem;
@@ -94,7 +98,7 @@ header{
         margin-left: 0.5rem;
         padding: 0.2rem 0.5rem;
       }
-      .labelChecked{
+      #labelChecked{
         color: #fff;
         background-color: #292A24;
         border: 1px solid #ccc;

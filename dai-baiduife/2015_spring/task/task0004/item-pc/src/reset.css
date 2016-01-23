@@ -1,0 +1,26 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+html,body{
+    font-size: 20px;
+    font-family: "Microsoft YaHei",Arial,Helvetica,sans-serif;
+    font-weight: 300;
+    background-color: #f5f5d5;
+}
+h1,h2,h3,h4,h5,h6,div,span,ul,button,header{
+    cursor: default;
+    -webkit-user-select: none;
+}
+a{
+    color: #333;
+    text-decoration: none;
+}
+ul,li{
+    list-style: none;
+    cursor: pointer;
+}
+button{
+    border: none;
+    outline: none;
+}

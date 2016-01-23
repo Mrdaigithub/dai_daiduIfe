@@ -29,18 +29,20 @@
 <header>
     <h1>GTD Tools</h1>
 </header>
-<div class="main">
+<div id="main">
     <div id="left">
         <h2>所有任务 <span></span></h2>
         <h2>分类列表</h2>
+        <div id="leftBox"></div>
         <div class="addFilesBtn"><span>+</span>新增分类</div>
     </div>
     <div id="middle">
-        <div class="label">
-            <a href="javascript:;" class="labelChecked">所有</a>
+        <div id="label">
+            <a href="javascript:;" id="labelChecked">所有</a>
             <a href="javascript:;">未完成</a>
             <a href="javascript:;">已完成</a>
         </div>
+        <div id="middleBox"></div>
         <div class="addFilesBtn"><span>+</span>新增任务</div>
     </div>
     <div id="right">
@@ -80,7 +82,6 @@
         </div>
     </div>
 </div>
-<script src="result/util.js"></script>
-<script src="result/script.js"></script>
+<script src="result/bundle.js"></script>
 </body>
 </html>

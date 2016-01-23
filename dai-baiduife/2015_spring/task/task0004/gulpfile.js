@@ -1,12 +1,18 @@
 //sass,js默认在source文件夹下
-var gulp = require('gulp');
-var sass = require('gulp-ruby-sass');
-var babel = require('gulp-babel');
-var browserSync = require('browser-sync').create();
-var reload      = browserSync.reload;
-var uglify = require('gulp-uglify');
-var uglifycss = require('gulp-uglifycss');
-var concat = require('gulp-concat');
+var gulp = require('gulp'),
+    sass = require('gulp-ruby-sass'),
+    babel = require('gulp-babel'),
+    browserSync = require('browser-sync').create(),
+    reload      = browserSync.reload,
+    uglify = require('gulp-uglify'),
+    uglifycss = require('gulp-uglifycss'),
+    concat = require('gulp-concat'),
+    browserify = require('browserify'),
+    source = require('vinyl-source-stream'),
+    sourcemaps = require("gulp-sourcemaps"),
+    buffer = require('vinyl-buffer'),
+    babelify = require('babelify');
+
 //最后执行
 gulp.task('default', ['mincss','minjs'], function () {
 });
@@ -33,18 +39,25 @@ gulp.task('sass', function () {
         .pipe(gulp.dest('item-pc/result'))
         .pipe(reload({stream: true}));
 });
-//es6转es5.1
+//js代码模块化,babel转化
 gulp.task('babel', function () {
-    return gulp.src('item-pc/src/*.js')
-        .pipe(babel({
-            presets: ['es2015']
-        }))
-        .pipe(gulp.dest('item-pc/result'));
+    browserify({
+        entries: ['item-pc/src/script.js'],
+        debug: true
+    })
+        .transform("babelify", {presets: ["es2015"]})
+        .bundle()
+        .pipe(source('bundle.js'))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({loadMaps: true}))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('./item-pc/result'))
 });
-//监控es6
+//监控代码模块化，es6
 gulp.task('watchjs', function () {
-    gulp.watch('item-pc/src/*.js', ['babel']);
+    gulp.watch('item-pc/src/*.js',['babel']);
 });
+
 // 静态服务器
 gulp.task('watchSass',  ['sass'], function() {
     browserSync.init({
