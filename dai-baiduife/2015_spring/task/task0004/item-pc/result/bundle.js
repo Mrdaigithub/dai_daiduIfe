@@ -9,7 +9,7 @@ var $ = _util.tools.$;
 (function () {
 
     //检测localStorage是否存在,不存在就添加初始数据
-    if (localStorage.getItem('localData') === null) {
+    if (localStorage.getItem('localData') === null || JSON.parse(localStorage.getItem('localData')).length === 0) {
         localStorage.setItem('localData', '[{"folderName":"默认分类","checked":false,"files":[{"fileName":"README","checked":true,"taskList":[{"taskName":"README","taskDate":"2016-01-15","taskContent":"xxxxxxxxxxxxxxxxx","complete":true,"checked":true}]}]}]');
     }
 
@@ -32,116 +32,114 @@ var $ = _util.tools.$;
 })();
 
 //任务列表双击隐藏
-$("#left").addEventListener('dblclick', function (event) {
+//$("#left").addEventListener('dblclick', function (event) {
+//    let e = window.event || event;
+//    console.log(e.target);
+//    if (e.target.nodeName === 'H3'){
+//        if (tools.nextNode(e.target).style.display !== 'block'){
+//            tools.nextNode(e.target).style.display = 'block';
+//        }else{
+//            tools.nextNode(e.target).style.display = 'none';
+//        }
+//    }
+//},false);
+
+$('#left').addEventListener('click', function (event) {
+    console.log('ok');
     var e = window.event || event;
-    if (e.target.nodeName === 'H3') {
-        if (_util.tools.nextNode(e.target).style.display === ('block' || null)) {
-            _util.tools.nextNode(e.target).style.display = 'none';
+
+    //删除分类列表
+
+    //删除文件
+    if (e.target.className === 'rmFileBtn' && e.target.parentNode.nodeName === 'LI' && confirm('Are you sure?')) {
+        //删除子文件数据
+        _util.setData.removeFileData(e.target.parentNode.innerText.replace(/X/, ''), _util.tools.prevNode(e.target.parentNode.parentNode).innerText.replace(/X/, ''));
+    } else if (e.target.className === 'rmFileBtn' && e.target.parentNode.nodeName === 'H3' && confirm('Are you sure?')) {
+
+        //删除文件夹
+        //删除文件夹及其子文件数据
+        _util.setData.removeFolderData(e.target.parentNode.innerText.replace(/X/, ''));
+    } else if (e.target.className === 'addFilesBtn') {
+        //添加分类
+        $('#createMask').style.display = 'block';
+    } else if (e.target.nodeName === 'H3') {
+        //添加标记在folder
+        _util.setData.checkedFiles(e.target, $('#fileChecked'));
+    } else if (e.target.nodeName === 'LI') {
+        //添加标记在file
+        _util.setData.checkedFiles(e.target, $('#fileChecked'));
+    }
+    //重绘
+    _util.setView.loadFileView();
+}, false);
+
+//创建文件或文件夹
+$('#createMask').addEventListener('click', function (event) {
+    var e = window.event || event;
+
+    //关闭创建窗口
+    if (e.target === $('#cancelBtn')) {
+        $('#createMask').style.display = 'none';
+    }
+    //创建
+    if (e.target === $('#createBtn')) {
+        var inputFileNameVal = $('#inputFileName').value;
+        //创建文件夹
+        if ($('#folder').checked) {
+            //修改本地存储数据
+            _util.setData.addFolderData(inputFileNameVal);
         } else {
-            _util.tools.nextNode(e.target).style.display = 'block';
+            //创建文件
+            var _checked = $('#fileChecked');
+            if (_checked.nodeName === 'LI') {
+                _util.setData.addFileData(inputFileNameVal, _util.tools.prevNode(_checked.parentNode).innerText.replace(/X/, ''));
+            } else if (_checked.nodeName === 'H3') {
+                _util.setData.addFileData(inputFileNameVal, _checked.innerText.replace(/X/, ''));
+            }
         }
+
+        //重绘
+        _util.setView.loadFileView();
+        $('#createMask').style.display = 'none';
     }
 }, false);
-//
-//
-//$('#left').addEventListener('click', function (event) {
-//    let e = window.event || event;
-//    //删除分类列表
-//    //删除文件
-//    if ((e.target.className === 'rmFileBtn') &&
-//        (e.target.parentNode.nodeName === 'LI') &&
-//        (confirm('Are you sure?'))){
-//        //删除子文件数据
-//        setData.removeFileData(e.target.parentNode.innerText.replace(/X$/,''),
-//            prevNode(e.target.parentNode.parentNode).innerText.replace(/X$/,''));
-//        e.target.parentNode.parentNode.removeChild(e.target.parentNode);
-//        //删除文件夹
-//    }else if ((e.target.className === 'rmFileBtn') &&
-//        (e.target.parentNode.nodeName === 'H3') &&
-//        (confirm('Are you sure?'))){
-//        //删除文件夹及其子文件数据
-//        setData.removeFolderData(e.target.parentNode.innerText.replace(/X$/,''));
-//        this.removeChild(e.target.parentNode.parentNode);
-//    }
-//    //添加分类
-//    if(e.target.className === 'addFilesBtn'){
-//        $('#createMask').style.display ='block';
-//    }
-//    //leftBar添加选中的标记
-//    (function () {
-//        let flag = $('#checked');
-//        if ((e.target.nodeName === 'LI' || e.target.nodeName === 'H3')){
-//            flag.id = null;
-//            e.target.id = 'checked';
-//        }
-//        //加载middle的task
-//        loadTask();
-//        //加载right
-//        loadTaskContent();
-//    })();
-//},false);
-//
-////创建文件或文件夹
-//$('#createMask').addEventListener('click', function (event) {
-//    let e = window.event || event,
-//        localData = JSON.parse(localStorage.getItem('localData'));
-//    //关闭创建窗口
-//    if(e.target === $('#cancelBtn')){
-//        $('#createMask').style.display ='none';
-//    }
-//    //创建
-//    if(e.target === $('#createBtn')){
-//        let inputFileNameVal = $('#inputFileName').value;
-//        //创建文件夹
-//        if($('#folder').checked){
-//            //修改本地存储数据
-//            setData.addFolderData(inputFileNameVal);
-//            //重新加载left的文件and文件夹
-//            loadFile();
-//        }else{
-//            //创建文件
-//            let checked = $('#checked');
-//            console.log(checked);
-//            if(checked.nodeName === 'LI'){
-//                setData.addFileData(inputFileNameVal,
-//                    prevNode($('#checked').parentNode).innerText.replace(/X$/,''));
-//            }else if(checked.nodeName === 'H3'){
-//                setData.addFileData(inputFileNameVal,checked.innerText.replace(/X$/,''));
-//            }
-//            //重新加载left的文件and文件夹
-//            loadFile();
-//        }
-//    }
-//},false);
-//
-//(function () {
-//    let checked = $('.taskBox')[0].children[1].children[0];
-//    $('#middle').addEventListener('click', function (event) {
-//        let e = window.event || event;
-//        //点击middle的完成分类按钮
-//        if (e.target.nodeName === 'A'){
-//            let labelChecked = $('.labelChecked')[0];
-//            labelChecked.className = null;
-//            e.target.className = 'labelChecked';
-//        }else if (e.target.nodeName === 'LI'){
-//            checked.id = '';
-//            e.target.id = 'taskChecked';
-//            checked = e.target;
-//        }
-//        if(e.target === $('.addFilesBtn')[1]){
-//        }
-//        loadTaskContent();
-//    },false)
-//})();
-//
-//$('#right').addEventListener('click', function (event) {
-//    let e = window.event || event;
-//    //按下任务完成按钮
-//    if(e.target === $('#completeBtn')){
-//        let taskChecked = $('#taskChecked');
-//        //setData.setTaskComplete(true,e.target.innerText,)
-//    }
-//},false);
+
+$('#middle').addEventListener('click', function (event) {
+    var e = window.event || event,
+        label = $('#label'),
+        readTask = $('#readTask'),
+        writeTask = $('#writeTask');
+    //点击middle的完成分类按钮
+    if (e.target.nodeName === 'A') {
+        for (var i = 0; i < label.children.length; i++) {
+            if (label.children[i].id === 'labelChecked') {
+                label.children[i].id = '';
+                break;
+            }
+        }
+        e.target.id = 'labelChecked';
+    } else if (e.target.nodeName === 'LI') {
+        checked.id = '';
+        e.target.id = 'taskChecked';
+        checked = e.target;
+    }
+    if (e.target === $('.addFilesBtn')[1]) {
+        //添加新任务
+        readTask.style.display = 'none';
+        writeTask.style.display = 'block';
+        writeTask.children[0].value = writeTask.children[1].value = writeTask.children[2].value = null;
+    }
+}, false);
+
+$('#right').addEventListener('click', function (event) {
+    var e = window.event || event;
+    //按下任务完成按钮
+    if (e.target === $('.completeBtn')[0]) {
+        var newTaskData = [writeTask.children[0].value, writeTask.children[1].value, writeTask.children[2].value];
+        _util.setData.addTaskData(newTaskData, $('#fileChecked').innerText.replace(/X/, ''), _util.tools.prevNode($('#fileChecked').parentNode).innerText.replace(/X/, ''));
+        _util.setView.loadTaskView();
+    }
+}, false);
 
 },{"./util.js":2}],2:[function(require,module,exports){
 "use strict";
@@ -180,29 +178,39 @@ var setView = {
 
     //清除上次的视图，将用来重绘
     clearDirty: function clearDirty(name) {
-        var clearList = document.getElementById(name);
-        if (clearList.length > 0) {
-            var parent = clearList[0].parentNode;
-            for (var i = 0; i < clearList.length; i++) {
-                parent.removeChild(clearList[i]);
+        var clearBox = tools.$(name),
+            clearList = clearBox.children;
+        for (var i = clearList.length; i > 0; i--) {
+            clearBox.removeChild(clearList[0]);
+        }
+    },
+
+    //判断是否有一样的taskDate
+    sameTaskDate: function sameTaskDate(compareDate) {
+        var localData = JSON.parse(localStorage.getItem('localData')),
+            taskBox = tools.$('.taskBox');
+        for (var i = 0; i < taskBox.length; i++) {
+            if (taskBox[i].getElementsByClassName('taskDate')[0].innerHTML === compareDate) {
+                return true;
             }
         }
+        return false;
     },
 
     //页面载入时加载left文件and文件夹
     loadFileView: function loadFileView() {
         var localData = JSON.parse(localStorage.getItem('localData'));
-        this.clearDirty('leftBox');
+        this.clearDirty('#leftBox');
         for (var i = 0; i < localData.length; i++) {
             var filesBox = this.div.cloneNode(true);
             filesBox.className = 'filesBox';
             var str = '';
             if (localData[i].checked) {
-                str += '<h3 id="fileChecked>';
+                str += '<h3 id="fileChecked">';
             } else {
                 str += '<h3>';
             }
-            str += localData[i].folderName + '<span class="rmFileBtn">X</span>' + '</h3>' + '<ul>';
+            str += localData[i].folderName + '<span class="rmFileBtn">X</span>' + '</h3>' + '<ul style="display: block;">';
             for (var j = 0; j < localData[i].files.length; j++) {
                 if (localData[i].files[j].checked) {
                     str += '<li id="fileChecked">';
@@ -221,7 +229,7 @@ var setView = {
     loadTaskView: function loadTaskView() {
         var localData = JSON.parse(localStorage.getItem('localData')),
             fileChecked = document.getElementById('fileChecked');
-        this.clearDirty('middleBox');
+        this.clearDirty('#middleBox');
         if (fileChecked.nodeName === 'H3') {
             for (var i = 0; i < localData.length; i++) {
                 console.log('ok');
@@ -241,6 +249,7 @@ var setView = {
                 for (var j = 0; j < localData[i].files.length; j++) {
                     if (localData[i].files[j].fileName === fileChecked.innerText.replace(/X/, '')) {
                         switch (tools.$('#labelChecked')) {
+
                             case tools.$('#label').children[0]:
                                 for (var k = 0; k < localData[i].files[j].taskList.length; k++) {
                                     var str = '',
@@ -248,47 +257,47 @@ var setView = {
                                     taskBox.className = 'taskBox';
 
                                     //判断是否已经创建相同的时间块
-                                    for (var l = 0; l < taskDateBox.length; l++) {
-                                        if (localData[i].files[j].taskList[k].taskDate === taskDateBox[l]) {
-                                            var _singleTask = this.li.cloneNode(true);
-                                            if (localData[i].files[j].taskList[k].taskComplete) {
-                                                _singleTask.className = 'taskComplete';
+                                    if (this.sameTaskDate(localData[i].files[j].taskList[k].taskDate)) {
+                                        //找到相同时间块
+                                        var _singleTask = this.li.cloneNode(true);
+                                        if (localData[i].files[j].taskList[k].taskComplete) {
+                                            _singleTask.className = 'taskComplete';
+                                        }
+                                        if (localData[i].files[j].taskList[k].checked) {
+                                            _singleTask.id = 'taskChecked';
+                                        }
+                                        _singleTask.innerHTML = localData[i].files[j].taskList[k].taskName;
+                                        //找到相同时间块
+                                        for (var m = 0; m < tools.$('.taskDate').length; m++) {
+                                            if (tools.$('.taskDate')[m].innerText === localData[i].files[j].taskList[k].taskDate) {
+                                                tools.nextNode(tools.$('.taskDate')[m]).appendChild(_singleTask);
+                                                break;
                                             }
+                                        }
+                                    } else {
+                                        //没有相同时间块
+                                        str += '<div class="taskDate">' + localData[i].files[j].taskList[k].taskDate + '</div>' + '<ul class="taskList">';
+                                        //添加完成标志
+                                        if (localData[i].files[j].taskList[k].complete) {
                                             if (localData[i].files[j].taskList[k].checked) {
-                                                _singleTask.id = 'taskChecked';
-                                            }
-                                            //找到相同时间块
-                                            for (var m = 0; m < tools.$('.taskDate').length; m++) {
-                                                if (tools.$('.taskDate')[m].innerText === localData[i].files[j].taskList[k].taskDate) {
-                                                    tools.nextNode(tools.$('.taskDate')[m]).appendChild(_singleTask);
-                                                    break;
-                                                }
+                                                str += '<li class="taskComplete" id="taskChecked">' + localData[i].files[j].taskList[k].taskName + '</li>' + '</ul>';
+                                            } else {
+                                                str += '<li class="taskComplete">' + localData[i].files[j].taskList[k].taskName + '</li>' + '</ul>';
                                             }
                                         } else {
-
-                                            //没有相同时间块
-                                            str += '<div class="taskDate">' + localData[i].files[j].taskList[k].taskDate + '</div>' + '<ul class="taskList">';
-                                            //添加完成标志
-                                            if (localData[i].files[j].taskList[k].complete) {
-                                                if (localData[i].files[j].taskList[k].checked) {
-                                                    str += '<li class="taskComplete" id="taskChecked">' + localData[i].files[j].taskList[k].taskName + '</li>' + '</ul>';
-                                                } else {
-                                                    str += '<li class="taskComplete">' + localData[i].files[j].taskList[k].taskName + '</li>' + '</ul>';
-                                                }
-                                            } else {
-                                                str += '<li>' + localData[i].files[j].taskList[k].taskName + '</li>' + '</ul>';
-                                                if (localData[i].files[j].taskList[k].checked) {
-                                                    singleTask.id = 'taskChecked';
-                                                }
+                                            str += '<li>' + localData[i].files[j].taskList[k].taskName + '</li>' + '</ul>';
+                                            if (localData[i].files[j].taskList[k].checked) {
+                                                singleTask.id = 'taskChecked';
                                             }
-                                            taskBox.innerHTML = str;
-                                            //将taskDate存入数组
-                                            taskDateBox.push(localData[i].files[j].taskList[k].taskDate);
-                                            tools.$('#middleBox').appendChild(taskBox);
                                         }
+                                        taskBox.innerHTML = str;
+                                        //将taskDate存入数组
+                                        taskDateBox.push(localData[i].files[j].taskList[k].taskDate);
+                                        tools.$('#middleBox').appendChild(taskBox);
                                     }
                                 }
                                 break;
+
                             case tools.$('#label').children[1]:
                                 for (var k = 0; k < localData[i].files[j].taskList.length; k++) {
                                     var str = '',
@@ -320,6 +329,7 @@ var setView = {
                                     }
                                 }
                                 break;
+
                             case tools.$('#label').children[2]:
                                 for (var k = 0; k < localData[i].files[j].taskList.length; k++) {
                                     var str = '',
@@ -352,6 +362,7 @@ var setView = {
                                     }
                                 }
                                 break;
+
                         }
                     }
                 }
@@ -396,6 +407,7 @@ var setData = {
         var localData = JSON.parse(localStorage.getItem('localData'));
         var dataTree = {
             folderName: folderName,
+            checked: false,
             files: []
         };
         localData.push(dataTree);
@@ -407,6 +419,7 @@ var setData = {
         var localData = JSON.parse(localStorage.getItem('localData'));
         var dataTree = {
             fileName: fileName,
+            checked: false,
             taskList: []
         };
         for (var i = 0; i < localData.length; i++) {
@@ -422,10 +435,11 @@ var setData = {
     addTaskData: function addTaskData(taskData, fileName, folderName) {
         var localData = JSON.parse(localStorage.getItem('localData'));
         var dataTree = {
-            taskName: taskData.taskName,
-            taskDate: taskData.taskDate,
-            taskContent: taskData.taskContent,
-            complete: taskData.complete
+            taskName: taskData[0],
+            taskDate: taskData[1],
+            taskContent: taskData[2],
+            complete: false,
+            checked: false
         };
         for (var i = 0; i < localData.length; i++) {
             if (localData[i].folderName === folderName) {
@@ -506,9 +520,83 @@ var setData = {
                 }
             }
         }
+    },
+
+    //添加标记
+    checkedFiles: function checkedFiles(newCheckedNode, oldCheckedNode) {
+        var localData = JSON.parse(localStorage.getItem('localData')),
+            oldCheckedName = oldCheckedNode.innerText.replace(/X/, ''),
+            newCheckedName = newCheckedNode.innerText.replace(/X/, '');
+        //清除原先标记
+        if (oldCheckedNode.nodeName === 'H3') {
+            for (var i = 0; i < localData.length; i++) {
+                if (localData[i].folderName === oldCheckedName) {
+                    localData[i].checked = false;
+                    break;
+                }
+            }
+        } else if (oldCheckedNode.nodeName === 'LI') {
+            for (var i = 0; i < localData.length; i++) {
+                for (var j = 0; j < localData[i].files.length; j++) {
+                    if (localData[i].files[j].fileName === oldCheckedName) {
+                        localData[i].files[j].checked = false;
+                        break;
+                    }
+                }
+            }
+        }
+        //添加标记
+        if (newCheckedNode.nodeName === 'H3') {
+            for (var i = 0; i < localData.length; i++) {
+                if (localData[i].folderName === newCheckedName) {
+                    localData[i].checked = true;
+                    break;
+                }
+            }
+        } else if (newCheckedNode.nodeName === 'LI') {
+            for (var i = 0; i < localData.length; i++) {
+                for (var j = 0; j < localData[i].files.length; j++) {
+                    if (localData[i].files[j].fileName === newCheckedName) {
+                        localData[i].files[j].checked = true;
+                        break;
+                    }
+                }
+            }
+        }
+        localStorage.setItem('localData', JSON.stringify(localData));
     }
 };
 
+//页面加载重置标记
+//resetCheckedFiles: function () {
+//    let localData = JSON.parse(localStorage.getItem('localData')),
+//        oldChecked = $('#fileChecked'),
+//        newChecked = $('#leftBox').getElementsByTagName('li')[0],
+//        oldCheckedName = oldChecked.innerText.replace(/X/,''),
+//        newCheckedName = newChecked.innerText.replace(/X/,'');
+//
+//    console.log(newChecked);
+//    //清除原先标记
+//    if(oldChecked.nodeName === 'H3'){
+//        for(let i=0; i<localData.length; i++){
+//            if(localData[i].folderName === oldCheckedName){
+//                localData[i].checked = false;
+//                break;
+//            }
+//        }
+//    }else if(oldChecked.nodeName === 'LI'){
+//        for(let i=0; i<localData.length; i++){
+//            for(let j=0; j<localData[i].files.length; j++){
+//                if(localData[i].files[j].fileName === oldCheckedName){
+//                    localData[i].files[j].checked = false;
+//                    break;
+//                }
+//            }
+//        }
+//    }
+//    localData[0].files[0].checked = true;
+//    localStorage.setItem('localData',JSON.stringify(localData));
+//}
 exports.tools = tools;
 exports.setData = setData;
 exports.setView = setView;

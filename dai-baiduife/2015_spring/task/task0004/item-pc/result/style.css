@@ -145,7 +145,7 @@ header h1 {
         background: url("../img/edit.png") no-repeat 0 0;
         background-size: 1rem; }
     #main #right #writeTask .taskTitle {
-      width: 40%;
+      width: 99%;
       display: block;
       font-size: 1.2rem;
       font-weight: 600;
@@ -154,7 +154,7 @@ header h1 {
       color: #fff;
       text-indent: 0.5rem; }
     #main #right #writeTask .taskDate {
-      width: 30%;
+      width: 99%;
       display: block;
       color: #fff;
       background-color: #292a24;
@@ -163,7 +163,7 @@ header h1 {
       text-indent: 0.25rem; }
     #main #right #writeTask .taskContent {
       display: block;
-      width: 95%;
+      width: 97%;
       text-indent: 1rem;
       height: 23.18rem;
       padding: 0.5rem;
