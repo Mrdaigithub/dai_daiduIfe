@@ -92,7 +92,7 @@ let setView = {
                     for(let j=0; j<localData[i].files.length; j++){
                         console.log('ok');
                         //查找labelChecked
-                        if($('#labelChecked') === $('#label').children[0]){
+                        if(tools.$('#labelChecked') === tools.$('#label').children[0]){
                             console.log('0');
                         }
                     }
@@ -105,6 +105,7 @@ let setView = {
                     if(localData[i].files[j].fileName === fileChecked.innerText.replace(/X/,'')){
                         switch (tools.$('#labelChecked')){
 
+                            //不定义是否完成,全部显示
                             case tools.$('#label').children[0]:
                                 for(let k=0; k<localData[i].files[j].taskList.length; k++){
                                     let str = '',
@@ -134,26 +135,28 @@ let setView = {
                                         str += '<div class="taskDate">' + localData[i].files[j].taskList[k].taskDate +
                                             '</div>' +
                                             '<ul class="taskList">';
+
                                         //添加完成标志
                                         if(localData[i].files[j].taskList[k].complete){
                                             if(localData[i].files[j].taskList[k].checked){
                                                 str += '<li class="taskComplete" id="taskChecked">' +
-                                                    localData[i].files[j].taskList[k].taskName +
-                                                    '</li>' +
+                                                    localData[i].files[j].taskList[k].taskName + '</li>' +
                                                     '</ul>';
                                             }else{
                                                 str += '<li class="taskComplete">' +
-                                                    localData[i].files[j].taskList[k].taskName +
-                                                    '</li>' +
+                                                    localData[i].files[j].taskList[k].taskName + '</li>' +
                                                     '</ul>';
                                             }
                                         }else{
-                                            str += '<li>' +
-                                                localData[i].files[j].taskList[k].taskName +
-                                                '</li>' +
-                                                '</ul>';
+                                            //不添加完成标志
+                                            //添加选中任务标志
                                             if(localData[i].files[j].taskList[k].checked){
-                                                singleTask.id = 'taskChecked';
+                                                str += '<li id="taskChecked">' +
+                                                    localData[i].files[j].taskList[k].taskName + '</li>' + '</ul>';
+                                            }else{
+                                                //没有选中任务
+                                                str += '<li>' +
+                                                    localData[i].files[j].taskList[k].taskName + '</li>' + '</ul>';
                                             }
                                         }
                                         taskBox.innerHTML = str;
@@ -164,55 +167,24 @@ let setView = {
                                 }
                                 break;
 
+                            //只显示未完成任务
                             case tools.$('#label').children[1]:
                                 for(let k=0; k<localData[i].files[j].taskList.length; k++){
                                     let str = '',
                                         taskBox = this.div.cloneNode(true);
                                     taskBox.className = 'taskBox';
-
-                                    //判断是否已经创建相同的时间块
-                                    if(!localData[i].files[j].taskList.complete){
-                                        for(let l=0; l<taskDateBox.length; l++){
-                                            if(localData[i].files[j].taskList[k].taskDate === taskDateBox[l]){
-                                                let singleTask = this.li.cloneNode(true);
-                                                //找到相同时间块
-                                                for(let m=0; m<tools.$('.taskDate').length; m++){
-                                                    if(tools.$('.taskDate')[m].innerText === localData[i].files[j].taskList[k].taskDate){
-                                                        tools.nextNode(tools.$('.taskDate')[m]).appendChild(singleTask);
-                                                        break;
-                                                    }
-                                                }
-                                            }else{
-
-                                                //没有相同时间块
-                                                str += '<div class="taskDate">' + localData[i].files[j].taskList[k].taskDate +
-                                                    '</div>' +
-                                                    '<ul class="taskList">' +
-                                                    '<li>' + localData[i].files[j].taskList[k].taskName + '</li>' +
-                                                    '</ul>';
-                                                taskBox.innerHTML = str;
-                                                //将taskDate存入数组
-                                                taskDateBox.push(localData[i].files[j].taskList[k].taskDate);
-                                                tools.$('#middleBox').appendChild(taskBox);
-                                            }
-                                        }
-                                    }
-                                }
-                                break;
-
-                            case tools.$('#label').children[2]:
-                                for(let k=0; k<localData[i].files[j].taskList.length; k++){
-                                    let str = '',
-                                        taskBox = this.div.cloneNode(true);
-                                    taskBox.className = 'taskBox';
-
-                                    //判断是否已经创建相同的时间块
-
-                                    //有相同时间快
-                                    for(let l=0; l<taskDateBox.length; l++){
-                                        if(localData[i].files[j].taskList[k].taskDate === taskDateBox[l]){
+                                    if(!localData[i].files[j].taskList[k].complete){
+                                        //判断是否已经创建相同的时间块
+                                        if(this.sameTaskDate(localData[i].files[j].taskList[k].taskDate)){
+                                            //找到相同时间块
                                             let singleTask = this.li.cloneNode(true);
-                                            singleTask.className = 'taskComplete';
+                                            if(localData[i].files[j].taskList[k].taskComplete){
+                                                singleTask.className = 'taskComplete';
+                                            }
+                                            if(localData[i].files[j].taskList[k].checked){
+                                                singleTask.id = 'taskChecked';
+                                            }
+                                            singleTask.innerHTML = localData[i].files[j].taskList[k].taskName;
                                             //找到相同时间块
                                             for(let m=0; m<tools.$('.taskDate').length; m++){
                                                 if(tools.$('.taskDate')[m].innerText === localData[i].files[j].taskList[k].taskDate){
@@ -221,12 +193,93 @@ let setView = {
                                                 }
                                             }
                                         }else{
-
                                             //没有相同时间块
-                                            str += '<div class="taskDate">' + localData[i].files[j].taskList[k].taskDate + '</div>' +
-                                                '<ul class="taskList">' +
-                                                '<li class="taskComplete">' + localData[i].files[j].taskList[k].taskName + '</li>' +
+                                            str += '<div class="taskDate">' + localData[i].files[j].taskList[k].taskDate +
+                                                '</div>' +
+                                                '<ul class="taskList">';
+                                            //添加完成标志
+                                            if(localData[i].files[j].taskList[k].complete){
+                                                if(localData[i].files[j].taskList[k].checked){
+                                                    str += '<li class="taskComplete" id="taskChecked">' +
+                                                        localData[i].files[j].taskList[k].taskName +
+                                                        '</li>' +
+                                                        '</ul>';
+                                                }else{
+                                                    str += '<li class="taskComplete">' +
+                                                        localData[i].files[j].taskList[k].taskName +
+                                                        '</li>' +
+                                                        '</ul>';
+                                                }
+                                            }else{
+                                                str += '<li>' +
+                                                    localData[i].files[j].taskList[k].taskName +
+                                                    '</li>' +
                                                     '</ul>';
+                                                if(localData[i].files[j].taskList[k].checked){
+                                                    singleTask.id = 'taskChecked';
+                                                }
+                                            }
+                                            taskBox.innerHTML = str;
+                                            //将taskDate存入数组
+                                            taskDateBox.push(localData[i].files[j].taskList[k].taskDate);
+                                            tools.$('#middleBox').appendChild(taskBox);
+                                        }
+                                    }
+                                }
+                                break;
+
+                            //只显示已完成任务
+                            case tools.$('#label').children[2]:
+                                for(let k=0; k<localData[i].files[j].taskList.length; k++){
+                                    let str = '',
+                                        taskBox = this.div.cloneNode(true);
+                                    taskBox.className = 'taskBox';
+                                    if(localData[i].files[j].taskList[k].complete){
+                                        //判断是否已经创建相同的时间块
+                                        if(this.sameTaskDate(localData[i].files[j].taskList[k].taskDate)){
+                                            //找到相同时间块
+                                            let singleTask = this.li.cloneNode(true);
+                                            if(localData[i].files[j].taskList[k].taskComplete){
+                                                singleTask.className = 'taskComplete';
+                                            }
+                                            if(localData[i].files[j].taskList[k].checked){
+                                                singleTask.id = 'taskChecked';
+                                            }
+                                            singleTask.innerHTML = localData[i].files[j].taskList[k].taskName;
+                                            //找到相同时间块
+                                            for(let m=0; m<tools.$('.taskDate').length; m++){
+                                                if(tools.$('.taskDate')[m].innerText === localData[i].files[j].taskList[k].taskDate){
+                                                    tools.nextNode(tools.$('.taskDate')[m]).appendChild(singleTask);
+                                                    break;
+                                                }
+                                            }
+                                        }else{
+                                            //没有相同时间块
+                                            str += '<div class="taskDate">' + localData[i].files[j].taskList[k].taskDate +
+                                                '</div>' +
+                                                '<ul class="taskList">';
+                                            //添加完成标志
+                                            if(localData[i].files[j].taskList[k].complete){
+                                                if(localData[i].files[j].taskList[k].checked){
+                                                    str += '<li class="taskComplete" id="taskChecked">' +
+                                                        localData[i].files[j].taskList[k].taskName +
+                                                        '</li>' +
+                                                        '</ul>';
+                                                }else{
+                                                    str += '<li class="taskComplete">' +
+                                                        localData[i].files[j].taskList[k].taskName +
+                                                        '</li>' +
+                                                        '</ul>';
+                                                }
+                                            }else{
+                                                str += '<li>' +
+                                                    localData[i].files[j].taskList[k].taskName +
+                                                    '</li>' +
+                                                    '</ul>';
+                                                if(localData[i].files[j].taskList[k].checked){
+                                                    singleTask.id = 'taskChecked';
+                                                }
+                                            }
                                             taskBox.innerHTML = str;
                                             //将taskDate存入数组
                                             taskDateBox.push(localData[i].files[j].taskList[k].taskDate);
@@ -292,6 +345,7 @@ let setData = {
     addFileData: function (fileName, folderName) {
         let localData = JSON.parse(localStorage.getItem('localData'));
         let dataTree = {
+            folderName:folderName,
             fileName:fileName,
             checked:false,
             taskList:[]
@@ -309,6 +363,8 @@ let setData = {
     addTaskData: function (taskData, fileName, folderName) {
         let localData = JSON.parse(localStorage.getItem('localData'));
         let dataTree = {
+            folderName:folderName,
+            fileName:fileName,
             taskName: taskData[0],
             taskDate: taskData[1],
             taskContent: taskData[2],
@@ -329,23 +385,42 @@ let setData = {
     },
 
     //修改任务完成情况
-    setTaskComplete: function (completeBool,taskName,fileName,folderName) {
+    setTaskComplete: function (completeBool,taskName,checkedFileNode) {
         let localData = JSON.parse(localStorage.getItem('localData'));
-        for(let i=0; i<localData.length; i++){
-            if(localData[i].folderName === folderName){
-                for(let j=0; j<localData[i].files.length; j++){
-                    if(localData[i].files[j].fileName === fileName){
+        if(checkedFileNode.nodeName === 'H3'){
+            let folderName = checkedFileNode.innerText.replace(/X/,'');
+            for(let i=0; i<localData.length; i++){
+                if(localData[i].folderName === folderName){
+                    for(let j=0; j<localData[i].files.length; j++){
                         for(let k=0; k<localData[i].files[j].taskList.length; k++){
-                            if(localData[i].files[j].taskList[k].taskName === taskName){
+                            if(localData[i].files[j].taskList[k].taskName === taskName.innerText &&
+                                localData[i].files[j].taskList[k].fileName === localData[i].files[j].fileName){
                                 localData[i].files[j].taskList[k].complete = completeBool;
-                                localStorage.setItem('localData',JSON.stringify(localData));
                                 break;
                             }
                         }
                     }
                 }
             }
+        }else if(checkedFileNode.nodeName === 'LI'){
+            let folderName = tools.prevNode(checkedFileNode.parentNode).innerText.replace(/X/,'');
+            let fileName = checkedFileNode.innerText.replace(/X/,'');
+            for(let i=0; i<localData.length; i++){
+                if(localData[i].folderName === folderName){
+                    for(let j=0; j<localData[i].files.length; j++){
+                        if(localData[i].files[j].fileName === fileName){
+                            for(let k=0; k<localData[i].files[j].taskList.length; k++){
+                                if(localData[i].files[j].taskList[k].taskName === taskName){
+                                    localData[i].files[j].taskList[k].complete = completeBool;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
+        localStorage.setItem('localData',JSON.stringify(localData));
     },
 
     //删除文件夹及其子文件数据
@@ -396,7 +471,7 @@ let setData = {
         }
     },
 
-    //添加标记
+    //添加left标记
     checkedFiles: function(newCheckedNode,oldCheckedNode){
         let localData = JSON.parse(localStorage.getItem('localData')),
             oldCheckedName = oldCheckedNode.innerText.replace(/X/,''),
@@ -439,6 +514,56 @@ let setData = {
         }
         localStorage.setItem('localData',JSON.stringify(localData));
     },
+
+    //添加任务选中标记
+    addTaskChecked: function (newCheckedNode,fileNode) {
+        let localData = JSON.parse(localStorage.getItem('localData'));
+        for(let i=0; i<localData.length; i++){
+            for(let j=0; j<localData[i].files.length; j++){
+                for(let k=0; k<localData[i].files[j].taskList.length; k++){
+                    if(localData[i].files[j].taskList[k].checked){
+                        localData[i].files[j].taskList[k].checked = false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if(fileNode.nodeName === 'H3'){
+            let folderName = fileNode.innerText.replace(/X/,'');
+            for(let i=0; i<localData.length; i++){
+                if(localData[i].folderName === folderName){
+                    for(let j=0; j<localData[i].files.length; j++){
+                        for(let k=0; k<localData[i].files[j].taskList.length; k++){
+                            if(localData[i].files[j].taskList[k].taskName === newCheckedNode.innerText &&
+                                localData[i].files[j].taskList[k].fileName === localData[i].files[j].fileName){
+                                localData[i].files[j].taskList[k].checked = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }else if(fileNode.nodeName === 'LI'){
+            let folderName = tools.prevNode(fileNode.parentNode).innerText.replace(/X/,'');
+            let fileName = fileNode.innerText.replace(/X/,'');
+            for(let i=0; i<localData.length; i++){
+                if(localData[i].folderName === folderName){
+                    for(let j=0; j<localData[i].files.length; j++){
+                        if(localData[i].files[j].fileName === fileName){
+                            for(let k=0; k<localData[i].files[j].taskList.length; k++){
+                                if(localData[i].files[j].taskList[k].taskName === newCheckedNode.innerText){
+                                    localData[i].files[j].taskList[k].checked = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        localStorage.setItem('localData',JSON.stringify(localData));
+    }
     //页面加载重置标记
     //resetCheckedFiles: function () {
     //    let localData = JSON.parse(localStorage.getItem('localData')),

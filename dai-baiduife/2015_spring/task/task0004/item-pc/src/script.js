@@ -7,7 +7,7 @@ const $ = tools.$;
 
     //检测localStorage是否存在,不存在就添加初始数据
     if (localStorage.getItem('localData') === null || JSON.parse(localStorage.getItem('localData')).length === 0){
-        localStorage.setItem('localData','[{"folderName":"默认分类","checked":false,"files":[{"fileName":"README","checked":true,"taskList":[{"taskName":"README","taskDate":"2016-01-15","taskContent":"xxxxxxxxxxxxxxxxx","complete":true,"checked":true}]}]}]')
+        localStorage.setItem('localData','[{"folderName":"默认分类","checked":false,"files":[{"folderName":"默认分类","fileName":"README","checked":true,"taskList":[{"folderName":"默认分类","fileName":"README","taskName":"README","taskDate":"2016-01-15","taskContent":"xxxxxxxxxxxxxxxxx","complete":true,"checked":true}]}]}]')
     }
 
     //控制高度和宽度
@@ -44,7 +44,6 @@ const $ = tools.$;
 
 
 $('#left').addEventListener('click', function (event) {
-    console.log('ok');
     let e = window.event || event;
 
     //删除分类列表
@@ -75,6 +74,8 @@ $('#left').addEventListener('click', function (event) {
     }
     //重绘
     setView.loadFileView();
+    setView.loadTaskView();
+    //setView.loadContentView();
 },false);
 
 
@@ -127,9 +128,7 @@ $('#middle').addEventListener('click', function (event) {
         }
         e.target.id = 'labelChecked';
     }else if (e.target.nodeName === 'LI'){
-        checked.id = '';
-        e.target.id = 'taskChecked';
-        checked = e.target;
+        setData.addTaskChecked(e.target,$('#fileChecked'));
     }
     if(e.target === $('.addFilesBtn')[1]){
         //添加新任务
@@ -137,11 +136,15 @@ $('#middle').addEventListener('click', function (event) {
         writeTask.style.display = 'block';
         writeTask.children[0].value = writeTask.children[1].value = writeTask.children[2].value = null;
     }
+
+    setView.loadTaskView();
+    setView.loadContentView();
 },false);
 
 
 $('#right').addEventListener('click', function (event) {
     let e = window.event || event;
+
     //按下任务完成按钮
     if(e.target === $('.completeBtn')[0]){
         let newTaskData = [writeTask.children[0].value,writeTask.children[1].value,writeTask.children[2].value];
@@ -149,4 +152,16 @@ $('#right').addEventListener('click', function (event) {
             tools.prevNode($('#fileChecked').parentNode).innerText.replace(/X/,''));
         setView.loadTaskView();
     }
+
+    if(e.target === $('#completeBtn')){
+        setData.setTaskComplete(true,$('#taskChecked').innerHTML,$('#fileChecked'));
+    }
+
+    if(e.target === $('#editBtn')){
+        $('#readTask').style.display = 'none';
+        $('#writeTask').style.display = 'block';
+    }
+
+    setView.loadTaskView();
+    setView.loadContentView();
 },false);

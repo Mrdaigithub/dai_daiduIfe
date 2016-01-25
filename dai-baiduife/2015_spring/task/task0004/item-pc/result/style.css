@@ -121,6 +121,7 @@ header h1 {
       font-size: 1.2rem;
       font-weight: 600;
       line-height: 2.5rem;
+      height: 2.5rem;
       background-color: #292a24;
       color: #fff;
       text-indent: 1rem;
@@ -130,6 +131,7 @@ header h1 {
       background-color: #292a24;
       font-size: 0.8rem;
       line-height: 1.5rem;
+      height: 1.5rem;
       text-indent: 1rem;
       border: 1px solid #999; }
     #main #right #readTask .taskContent {
@@ -139,11 +141,6 @@ header h1 {
       background-color: #292a24;
       color: #fff;
       font-size: 0.6rem; }
-    #main #right #readTask .completeBox {
-      position: absolute; }
-      #main #right #readTask .completeBox #completeBtn {
-        background: url("../img/edit.png") no-repeat 0 0;
-        background-size: 1rem; }
     #main #right #writeTask .taskTitle {
       width: 99%;
       display: block;
@@ -184,19 +181,19 @@ header h1 {
         background-color: #19a15f; }
       #main #right .editBtnBox .giveUp {
         background-color: #dd5145; }
-    #main #right .completeBox {
+    #main #right #completeBox {
       position: absolute;
       right: 0.5rem;
       top: 0.5rem; }
-      #main #right .completeBox a {
+      #main #right #completeBox a {
         width: 1.5rem;
         height: 1.5rem;
         margin-right: 0.5rem;
         display: inline-block; }
-      #main #right .completeBox #completeBtn {
+      #main #right #completeBox #completeBtn {
         background: url("../img/complete.png") no-repeat 0 0;
         background-size: 1.5rem; }
-      #main #right .completeBox #editBtn {
+      #main #right #completeBox #editBtn {
         background: url("../img/edit.png") no-repeat 0 0;
         background-size: 1.5rem; }
 

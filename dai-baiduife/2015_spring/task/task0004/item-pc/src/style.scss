@@ -155,6 +155,7 @@ header{
         font-size: 1.2rem;
         font-weight: 600;
         line-height: 2.5rem;
+        height: 2.5rem;
         background-color: #292a24;
         color: #fff;
         text-indent: 1rem;
@@ -165,6 +166,7 @@ header{
         background-color: #292a24;
         font-size: 0.8rem;
         line-height: 1.5rem;
+        height: 1.5rem;
         text-indent: 1rem;
         border: 1px solid #999;
       }
@@ -175,16 +177,6 @@ header{
         background-color: #292a24;
         color: #fff;
         font-size: 0.6rem;
-      }
-      .completeBox{
-        position: absolute;
-        #completeBtn{
-          background: url("../img/edit.png")no-repeat 0 0;
-          background-size: 1rem;
-        }
-        #edit{
-
-        }
       }
     }
     #writeTask{
@@ -236,7 +228,7 @@ header{
         background-color: #dd5145;
       }
     }
-    .completeBox{
+    #completeBox{
       position: absolute;
       right: 0.5rem;
       top: 0.5rem;
