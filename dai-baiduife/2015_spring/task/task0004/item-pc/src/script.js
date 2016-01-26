@@ -26,7 +26,7 @@ const $ = tools.$;
     //初始化加载view
     setView.loadFileView();
     setView.loadTaskView();
-    setView.loadContentView();
+    //setView.loadContentView();
 })();
 
 //任务列表双击隐藏
@@ -138,7 +138,7 @@ $('#middle').addEventListener('click', function (event) {
     }
 
     setView.loadTaskView();
-    setView.loadContentView();
+    //setView.loadContentView();
 },false);
 
 
@@ -163,5 +163,5 @@ $('#right').addEventListener('click', function (event) {
     }
 
     setView.loadTaskView();
-    setView.loadContentView();
+    //setView.loadContentView();
 },false);
