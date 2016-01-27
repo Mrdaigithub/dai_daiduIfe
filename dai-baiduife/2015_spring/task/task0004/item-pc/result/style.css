@@ -96,7 +96,8 @@ header h1 {
       background-size: 1rem 1rem;
       color: #1aa260; }
     #main #middle .taskBox #taskChecked {
-      background-color: #3F3E33; }
+      background-color: #999;
+      color: #000; }
     #main #middle .addFilesBtn {
       text-indent: 0.5rem;
       width: 13.2rem;

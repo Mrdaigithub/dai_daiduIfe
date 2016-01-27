@@ -1,6 +1,7 @@
 "use strict";
 import {tools,setData,setView} from './util.js';
 const $ = tools.$;
+let editMode = false;
 
 //页面加载处理
 (function () {
@@ -26,7 +27,7 @@ const $ = tools.$;
     //初始化加载view
     setView.loadFileView();
     setView.loadTaskView();
-    //setView.loadContentView();
+    setView.loadContentView()
 })();
 
 //任务列表双击隐藏
@@ -68,14 +69,21 @@ $('#left').addEventListener('click', function (event) {
     } else if(e.target.nodeName === 'H3'){
         //添加标记在folder
         setData.checkedFiles(e.target, $('#fileChecked'));
+        setView.loadFileView();
+        setView.loadTaskView();
+        setData.addTaskChecked(middleBox.getElementsByTagName('li')[0],$('#fileChecked'));
     } else if(e.target.nodeName === 'LI'){
         //添加标记在file
         setData.checkedFiles(e.target, $('#fileChecked'));
+        setView.loadFileView();
+        setView.loadTaskView();
+        setData.addTaskChecked(document.getElementById('middleBox').getElementsByTagName('li')[0],
+            $('#fileChecked'));
     }
     //重绘
     setView.loadFileView();
     setView.loadTaskView();
-    //setView.loadContentView();
+    setView.loadContentView()
 },false);
 
 
@@ -117,7 +125,8 @@ $('#middle').addEventListener('click', function (event) {
     let e = window.event || event,
         label = $('#label'),
         readTask = $('#readTask'),
-        writeTask = $('#writeTask');
+        writeTask = $('#writeTask'),
+        middleBox = document.getElementById('middleBox');
     //点击middle的完成分类按钮
     if (e.target.nodeName === 'A'){
         for(let i=0; i<label.children.length; i++){
@@ -127,6 +136,8 @@ $('#middle').addEventListener('click', function (event) {
             }
         }
         e.target.id = 'labelChecked';
+        setView.loadTaskView();
+        setData.addTaskChecked(middleBox.getElementsByTagName('li')[0],$('#fileChecked'));
     }else if (e.target.nodeName === 'LI'){
         setData.addTaskChecked(e.target,$('#fileChecked'));
     }
@@ -135,10 +146,11 @@ $('#middle').addEventListener('click', function (event) {
         readTask.style.display = 'none';
         writeTask.style.display = 'block';
         writeTask.children[0].value = writeTask.children[1].value = writeTask.children[2].value = null;
+        editMode = false;
     }
 
     setView.loadTaskView();
-    //setView.loadContentView();
+    setView.loadContentView();
 },false);
 
 
@@ -147,10 +159,18 @@ $('#right').addEventListener('click', function (event) {
 
     //按下任务完成按钮
     if(e.target === $('.completeBtn')[0]){
-        let newTaskData = [writeTask.children[0].value,writeTask.children[1].value,writeTask.children[2].value];
-        setData.addTaskData(newTaskData, $('#fileChecked').innerText.replace(/X/,''),
-            tools.prevNode($('#fileChecked').parentNode).innerText.replace(/X/,''));
-        setView.loadTaskView();
+        //在新建模式
+        if(!editMode){
+            let newTaskData = [writeTask.children[0].value,writeTask.children[1].value,writeTask.children[2].value];
+            setData.addTaskData(newTaskData, $('#fileChecked').innerText.replace(/X/,''),
+                tools.prevNode($('#fileChecked').parentNode).innerText.replace(/X/,''));
+        }else{
+            //在编辑模式
+            //let taskName =
+        }
+        $('#readTask').style.display = 'block';
+        $('#writeTask').style.display = 'none';
+        editMode = false;
     }
 
     if(e.target === $('#completeBtn')){
@@ -160,6 +180,7 @@ $('#right').addEventListener('click', function (event) {
     if(e.target === $('#editBtn')){
         $('#readTask').style.display = 'none';
         $('#writeTask').style.display = 'block';
+        editMode = true;
     }
 
     setView.loadTaskView();
