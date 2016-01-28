@@ -49,6 +49,55 @@ let setView = {
         return false;
     },
 
+    //判断文件夹是否重名
+    repeatFolderName: function (name) {
+        let localData = JSON.parse(localStorage.getItem('localData'));
+        for(let i=0; i<localData.length; i++){
+            if(localData[i].folderName === name){
+                return true;
+            }
+        }
+        return false;
+    },
+
+    //判断文件是否重名
+    repeatFileName: function (name,folderName) {
+        let localData = JSON.parse(localStorage.getItem('localData'));
+        for(let i=0; i<localData.length; i++){
+            if(localData[i].folderName === folderName){
+                for(let j=0; j<localData[i].files.length; j++){
+                    if(localData[i].files[j].fileName === name){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    },
+
+    //判断task是否重名
+    repeatTaskName: function (name,fileCheckedNode) {
+        let localData = JSON.parse(localStorage.getItem('localData')),
+            folderName;
+        if(fileCheckedNode.nodeName === 'H3'){
+            folderName = fileCheckedNode.innerText.replace(/X/,'');
+        }else if(fileCheckedNode.nodeName === 'LI'){
+            folderName = tools.prevNode(fileCheckedNode.parentNode).innerText.replace(/X/,'');
+        }
+        for(let i=0; i<localData.length; i++){
+            if(localData[i].folderName === folderName){
+                for(let j=0; j<localData[i].files.length; j++){
+                    for(let k=0; k<localData[i].files[j].taskList.length; k++){
+                        if(localData[i].files[j].taskList[k].taskName === name){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    },
+
     //页面载入时加载left文件and文件夹
     loadFileView: function(){
         let localData = JSON.parse(localStorage.getItem('localData'));
@@ -456,10 +505,12 @@ let setView = {
             }
         }
     },
+
+    //加载task详细内容
     loadContentView: function(){
-        //if(!taskName){
-        //    return 0;
-        //}
+        if(!tools.$('#taskChecked')){
+            return 0;
+        }
         let localData = JSON.parse(localStorage.getItem('localData')),
             fileChecked = tools.$('#fileChecked'),
             folderName = null,
@@ -524,8 +575,15 @@ let setData = {
     },
 
     //添加任务数据
-    addTaskData: function (taskData, fileName, folderName) {
-        let localData = JSON.parse(localStorage.getItem('localData'));
+    addTaskData: function (taskData,fileCheckedNode) {
+        let localData = JSON.parse(localStorage.getItem('localData')), folderName, fileName;
+        if(fileCheckedNode.nodeName === 'H3'){
+            folderName = tools.$('#fileChecked').innerText.replace(/X/,'');
+            fileName = tools.nextNode(tools.$('#fileChecked')).children[0].innerText.replace(/X/,'');
+        }else if(fileCheckedNode.nodeName === 'LI'){
+                folderName = tools.prevNode(tools.$('#fileChecked').parentNode).innerText.replace(/X/,''),
+                fileName = tools.$('#fileChecked').innerText.replace(/X/,'');
+        }
         let dataTree = {
             folderName:folderName,
             fileName:fileName,
@@ -548,6 +606,42 @@ let setData = {
         }
     },
 
+
+    //修改任务数据
+    modTaskData: function (taskData,fileCheckedNode) {
+        let localData = JSON.parse(localStorage.getItem('localData')),
+            folderName,
+            fileName,
+            taskName = taskData[0],
+            taskDate = taskData[1],
+            taskContent = taskData[2];
+
+        if(fileCheckedNode.nodeName === 'H3'){
+            folderName = tools.$('#fileChecked').innerText.replace(/X/,'');
+            fileName = tools.nextNode(tools.$('#fileChecked')).children[0].innerText.replace(/X/,'');
+        }else if(fileCheckedNode.nodeName === 'LI'){
+            folderName = tools.prevNode(tools.$('#fileChecked').parentNode).innerText.replace(/X/,''),
+                fileName = tools.$('#fileChecked').innerText.replace(/X/,'');
+        }
+
+        for(let i=0; i<localData.length; i++){
+            if(localData[i].folderName === folderName){
+                for(let j=0; j<localData[i].files.length; j++){
+                    if(localData[i].files[j].fileName === fileName){
+                        for(let k=0; j<localData[i].files[j].taskList.length; k++){
+                            if(localData[i].files[j].taskList[k].taskName === taskName){
+                                localData[i].files[j].taskList[k].taskContent = taskContent;
+                                localStorage.setItem('localData',JSON.stringify(localData));
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+
+
     //修改任务完成情况
     setTaskComplete: function (completeBool,taskName,checkedFileNode) {
         let localData = JSON.parse(localStorage.getItem('localData'));
@@ -557,7 +651,6 @@ let setData = {
                 if(localData[i].folderName === folderName){
                     for(let j=0; j<localData[i].files.length; j++){
                         for(let k=0; k<localData[i].files[j].taskList.length; k++){
-                            console.log(taskName);
                             if(localData[i].files[j].taskList[k].taskName === taskName &&
                                 localData[i].files[j].taskList[k].fileName === localData[i].files[j].fileName){
                                 localData[i].files[j].taskList[k].complete = completeBool;
@@ -743,8 +836,6 @@ let setData = {
                 }
             }
             localStorage.setItem('localData',JSON.stringify(localData));
-        }else{
-            console.log('没有符合条件的task');
         }
     },
 

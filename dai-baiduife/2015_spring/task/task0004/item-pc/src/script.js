@@ -30,19 +30,6 @@ let editMode = false;
     setView.loadContentView()
 })();
 
-//任务列表双击隐藏
-//$("#left").addEventListener('dblclick', function (event) {
-//    let e = window.event || event;
-//    console.log(e.target);
-//    if (e.target.nodeName === 'H3'){
-//        if (tools.nextNode(e.target).style.display !== 'block'){
-//            tools.nextNode(e.target).style.display = 'block';
-//        }else{
-//            tools.nextNode(e.target).style.display = 'none';
-//        }
-//    }
-//},false);
-
 
 $('#left').addEventListener('click', function (event) {
     let e = window.event || event;
@@ -101,16 +88,27 @@ $('#createMask').addEventListener('click', function (event) {
         //创建文件夹
         if($('#folder').checked){
             //修改本地存储数据
-            setData.addFolderData(inputFileNameVal);
+            if(!setView.repeatFolderName(inputFileNameVal)){
+                setData.addFolderData(inputFileNameVal);
+            }else{
+                alert('重名..');
+            }
         } else{
             //创建文件
             let checked = $('#fileChecked');
             if(checked.nodeName === 'LI'){
-                setData.addFileData(inputFileNameVal,
-                    tools.prevNode(checked.parentNode).innerText.replace(/X/,''));
+                if(!setView.repeatFileName(inputFileNameVal, tools.prevNode(checked.parentNode).innerText.replace(/X/,''))){
+                    setData.addFileData(inputFileNameVal, tools.prevNode(checked.parentNode).innerText.replace(/X/,''));
+                }else{
+                    alert('重名..');
+                }
             }else if(checked.nodeName === 'H3'){
-                setData.addFileData(inputFileNameVal,
-                    checked.innerText.replace(/X/,''));
+                console.log('ok');
+                if(!setView.repeatFileName(inputFileNameVal, checked.innerText.replace(/X/,''))){
+                    setData.addFileData(inputFileNameVal, checked.innerText.replace(/X/,''));
+                }else{
+                    alert('重名..');
+                }
             }
         }
 
@@ -138,8 +136,12 @@ $('#middle').addEventListener('click', function (event) {
         e.target.id = 'labelChecked';
         setView.loadTaskView();
         setData.addTaskChecked(middleBox.getElementsByTagName('li')[0],$('#fileChecked'));
+        setView.loadTaskView();
+        setView.loadContentView();
     }else if (e.target.nodeName === 'LI'){
         setData.addTaskChecked(e.target,$('#fileChecked'));
+        setView.loadTaskView();
+        setView.loadContentView();
     }
     if(e.target === $('.addFilesBtn')[1]){
         //添加新任务
@@ -148,41 +150,63 @@ $('#middle').addEventListener('click', function (event) {
         writeTask.children[0].value = writeTask.children[1].value = writeTask.children[2].value = null;
         editMode = false;
     }
-
-    setView.loadTaskView();
-    setView.loadContentView();
 },false);
 
 
 $('#right').addEventListener('click', function (event) {
-    let e = window.event || event;
+    let e = window.event || event,
+        readTask = $('#readTask'),
+        writeTask = $('#writeTask'),
+        newTaskData = [writeTask.children[0].value,writeTask.children[1].value,writeTask.children[2].value];
 
-    //按下任务完成按钮
-    if(e.target === $('.completeBtn')[0]){
-        //在新建模式
-        if(!editMode){
-            let newTaskData = [writeTask.children[0].value,writeTask.children[1].value,writeTask.children[2].value];
-            setData.addTaskData(newTaskData, $('#fileChecked').innerText.replace(/X/,''),
-                tools.prevNode($('#fileChecked').parentNode).innerText.replace(/X/,''));
-        }else{
-            //在编辑模式
-            //let taskName =
-        }
-        $('#readTask').style.display = 'block';
-        $('#writeTask').style.display = 'none';
-        editMode = false;
+    switch (e.target){
+
+        //按下保存按钮
+        case $('#saveBtn'):
+            if(newTaskData[0] == false ||
+                newTaskData[1] == false ||
+                newTaskData[2] == false){
+                alert('null');
+            }else{
+                //在新建模式
+                if(!editMode){
+                    if(!setView.repeatTaskName(writeTask.children[0].value,$('#fileChecked'))){
+                        setData.addTaskData(newTaskData, $('#fileChecked'));
+                    }else{
+                        alert('重名..');
+                    }
+                }else{
+                    //在编辑模式
+                    setData.modTaskData(newTaskData, $('#fileChecked'));
+                }
+                readTask.style.display = 'block';
+                writeTask.style.display = 'none';
+                editMode = false;
+            }
+            setView.loadTaskView();
+            setView.loadContentView();
+            break;
+
+        //按下放弃修改按钮
+        case $('#giveUp'):
+            readTask.style.display = 'block';
+            writeTask.style.display = 'none';
+            editMode = false;
+            setView.loadContentView();
+            break;
+
+        //按下任务完成按钮
+        case $('#completeBtn'):
+            setData.setTaskComplete(true,$('#taskChecked').innerHTML,$('#fileChecked'));
+            setView.loadTaskView();
+            break;
+
+        //按下编辑任务按钮
+        case $('#editBtn'):
+            $('#readTask').style.display = 'none';
+            $('#writeTask').style.display = 'block';
+            editMode = true;
+            setView.loadContentView();
+            break;
     }
-
-    if(e.target === $('#completeBtn')){
-        setData.setTaskComplete(true,$('#taskChecked').innerHTML,$('#fileChecked'));
-    }
-
-    if(e.target === $('#editBtn')){
-        $('#readTask').style.display = 'none';
-        $('#writeTask').style.display = 'block';
-        editMode = true;
-    }
-
-    setView.loadTaskView();
-    //setView.loadContentView();
 },false);

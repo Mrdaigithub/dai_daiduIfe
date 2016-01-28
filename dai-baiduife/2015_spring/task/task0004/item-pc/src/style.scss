@@ -182,7 +182,7 @@ header{
     }
     #writeTask{
       .taskTitle{
-        width: 99%;
+        width: 100%;
         display: block;
         font-size: 1.2rem;
         font-weight: 600;
@@ -190,25 +190,31 @@ header{
         background-color: #292a24;
         color: #fff;
         text-indent: 0.5rem;
+        border: none;
+        border-bottom: 1px solid #fff;
       }
       .taskDate{
-        width: 99%;
+        width: 100%;
         display: block;
         color: #fff;
         background-color: #292a24;
         font-size: 0.8rem;
         line-height: 1.5rem;
         text-indent: 0.25rem;
+        border: none;
+        border-bottom: 1px solid #fff;
       }
       .taskContent{
         display: block;
-        width: 97%;
+        width: 97.5%;
         text-indent: 1rem;
         height: 23.18rem;
         padding: 0.5rem;
         background-color: #292a24;
         color: #fff;
         font-size: 0.6rem;
+        border: none;
+        border-bottom: 1px solid #fff;
       }
     }
     .editBtnBox{
@@ -222,10 +228,10 @@ header{
         font-size: 0.8rem;
         margin-right: 1rem;
       }
-      .completeBtn{
+      #saveBtn{
         background-color: #19a15f;
       }
-      .giveUp{
+      #giveUp{
         background-color: #dd5145;
       }
     }
